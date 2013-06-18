@@ -26,5 +26,11 @@ public class TestGenerator {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+        System.out.println(testJavaFile);
+        System.out.println(testCompilationUnit.toString());
+    }
+
+    private static void ifExistDonnotOverride(){
+
     }
 }
