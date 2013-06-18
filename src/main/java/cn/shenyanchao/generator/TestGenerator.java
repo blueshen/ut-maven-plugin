@@ -19,10 +19,12 @@ import java.nio.charset.Charset;
 public class TestGenerator {
 
     public static void writeJavaTest(String testDir, CompilationUnit testCompilationUnit) {
-        try {
-            FileUtils.writeStringToFile(new File(testDir + File.separator + PathUtils.packageToPath(testCompilationUnit.getPackage().getName().toString()) + File.separator + testCompilationUnit.getTypes().get(0).getName() + ".java"), testCompilationUnit.toString(), Charset.forName(Consts.DEFAULT_ENCODE));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String packageName = testCompilationUnit.getPackage().getName().toString();
+        String testJavaFile = testDir + File.separator + PathUtils.packageToPath(packageName) + File.separator + testCompilationUnit.getTypes().get(0).getName() + Consts.JAVA_SUFFIX;
+//        try {
+//            FileUtils.writeStringToFile(new File(testJavaFile), testCompilationUnit.toString(), Charset.forName(Consts.DEFAULT_ENCODE));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }
