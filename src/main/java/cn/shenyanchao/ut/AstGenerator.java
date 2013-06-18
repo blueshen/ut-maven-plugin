@@ -1,25 +1,34 @@
 package cn.shenyanchao.ut;
 
-import cn.shenyanchao.filter.DirAndJavaFilter;
+import cn.shenyanchao.builder.ClassTypeBuilder;
+import cn.shenyanchao.builder.CompilationUnitBuilder;
+import cn.shenyanchao.common.Consts;
+import cn.shenyanchao.common.FileComments;
 import cn.shenyanchao.filter.JavaFileFilter;
+import cn.shenyanchao.generator.TestGenerator;
 import cn.shenyanchao.utils.JavaParserFactory;
-import japa.parser.ast.*;
-import japa.parser.ast.body.*;
+import cn.shenyanchao.utils.MembersFilter;
+import cn.shenyanchao.utils.PackageUtils;
+import japa.parser.ast.CompilationUnit;
+import japa.parser.ast.ImportDeclaration;
+import japa.parser.ast.PackageDeclaration;
+import japa.parser.ast.body.BodyDeclaration;
+import japa.parser.ast.body.MethodDeclaration;
+import japa.parser.ast.body.TypeDeclaration;
+import japa.parser.ast.body.VariableDeclaratorId;
 import japa.parser.ast.expr.AnnotationExpr;
+import japa.parser.ast.expr.NameExpr;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.*;
-import java.nio.charset.Charset;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,7 +43,8 @@ import java.util.List;
 @Mojo(name = "source2test", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class AstGenerator extends AbstractMojo {
 
-    private static final String ENCODE = "UTF-8";
+    @Parameter(defaultValue = Consts.DEFAULT_ENCODE, property = "sourceEncode", required = false)
+    private String sourceEncode;
 
     @Parameter(defaultValue = "${project.build.sourceDirectory}", property = "sourceDir", required = false)
     private String sourceDir;
@@ -44,7 +54,6 @@ public class AstGenerator extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-
 
         getLog().info("############################################################");
         getLog().info(sourceDir);
@@ -56,37 +65,18 @@ public class AstGenerator extends AbstractMojo {
         makeDirIfNotExist(sourceDirectory);
         makeDirIfNotExist(testDirectory);
 
-        Iterator<File> fileItr = FileUtils.iterateFiles(new File(sourceDir), new JavaFileFilter(), TrueFileFilter.INSTANCE);
+        Iterator<File> fileItr = FileUtils.iterateFiles(sourceDirectory, new JavaFileFilter(), TrueFileFilter.INSTANCE);
         while (fileItr.hasNext()) {
             File javaFile = fileItr.next();
-            getLog().info("start process filter:" + javaFile.getAbsolutePath());
+            getLog().info("start process file:" + javaFile.getAbsolutePath());
             //todo
-            //process java filter
+            //process java file
             convertJavaFile2Test(javaFile);
         }
-
-
     }
 
-    private void recruiseDir(File dir) {
-        if (dir.isDirectory()) {
-            File[] subFiles = dir.listFiles(new DirAndJavaFilter());
-            for (File subFile : subFiles) {
-                if (subFile.isDirectory()) {
-                    recruiseDir(subFile);
-                } else if (subFile.isFile()) {
-                    getLog().info("start process filter:" + subFile.getAbsolutePath());
-                    //todo
-                    //process java filter
-                    convertJavaFile2Test(subFile);
-                }
-            }
-
-        }
-    }
 
     private void makeDirIfNotExist(File dir) {
-
         if (!dir.isDirectory()) {
             getLog().error(dir.getAbsolutePath() + "is not a directory!");
         }
@@ -98,64 +88,41 @@ public class AstGenerator extends AbstractMojo {
 
     private void convertJavaFile2Test(File javaFile) {
 
-        japa.parser.ast.CompilationUnit compilationUnit = JavaParserFactory.getCompilationUnit(javaFile, ENCODE);
+        CompilationUnit compilationUnit = JavaParserFactory.getCompilationUnit(javaFile, sourceEncode);
 
+        CompilationUnitBuilder compilationUnitBuilder = new CompilationUnitBuilder();
+        compilationUnitBuilder.buildComment(FileComments.GENERATOR_COMMENT);
         //process package
-        japa.parser.ast.PackageDeclaration packageDeclaration = compilationUnit.getPackage();
-        String packageName = packageDeclaration.getName().toString();
-        getLog().info("packageName:" + packageName);
+        PackageDeclaration packageDeclaration = compilationUnit.getPackage();
+        String testPackageName = PackageUtils.getTestPackageNameFrom(packageDeclaration);
+        compilationUnitBuilder.buildPackage(testPackageName);
         //process import
-        List importList = compilationUnit.getImports();
-        if (null != importList) {
-            for (Object impt : importList) {
-                japa.parser.ast.ImportDeclaration importDeclaration = (japa.parser.ast.ImportDeclaration) impt;
-                getLog().info("import:" + importDeclaration.getName().toString());
-            }
-        }
+
         //process type
         List typeList = compilationUnit.getTypes();
         for (Object type : typeList) {
-            japa.parser.ast.body.TypeDeclaration typeDeclaration = (japa.parser.ast.body.TypeDeclaration) type;
-            getLog().info("className:" + typeDeclaration.getName().toString());
+            TypeDeclaration typeDeclaration = (TypeDeclaration) type;
+            String className = typeDeclaration.getName().toString();
+            getLog().info("className:" + className);
+            ClassTypeBuilder classTypeBuilder = new ClassTypeBuilder(className + Consts.TEST_SUFFIX);
             //process methods
-            List<japa.parser.ast.body.BodyDeclaration> members = typeDeclaration.getMembers();
-            List<japa.parser.ast.body.MethodDeclaration> methodDeclarations = new ArrayList<japa.parser.ast.body.MethodDeclaration>();
-            for (japa.parser.ast.body.BodyDeclaration body : members) {
-                if (body instanceof japa.parser.ast.body.MethodDeclaration) {
-                    methodDeclarations.add((japa.parser.ast.body.MethodDeclaration) body);
-                }
-            }
-            for (japa.parser.ast.body.MethodDeclaration methodDeclaration : methodDeclarations) {
-                int modifierMod = methodDeclaration.getModifiers();
-                String modifierName = java.lang.reflect.Modifier.toString(modifierMod);
-                getLog().info("modifierName:" + modifierName);
+            List<MethodDeclaration> methodDeclarations = MembersFilter.findMethodsFrom(typeDeclaration);
+            for (MethodDeclaration methodDeclaration : methodDeclarations) {
+                //has method and add import
+                compilationUnitBuilder.buildImports(null);
+
+                String methodName = methodDeclaration.getName();
                 getLog().info("methodName:" + methodDeclaration.getName());
-//                List<TypeParameter> typeParameters = methodDeclaration.getTypeParameters();
-//                getLog().info("typeParameter"+typeParameters.toString());
-//                BlockStmt bodyBlock = methodDeclaration.getBody();
-//                getLog().info("bodyBLock:"+bodyBlock.getStmts().toString());
-                String returnType = methodDeclaration.getType().toString();
-                getLog().info("returnType:" + returnType);
-                List<AnnotationExpr> annotationExprs = methodDeclaration.getAnnotations();
-                if (null != annotationExprs)
-                    getLog().info("annotations:" + annotationExprs.toString());
-                List<japa.parser.ast.body.Parameter> parameters = methodDeclaration.getParameters();
-                if (null != parameters) {
-//                    System.out.println(parameters.toString());
-                    for (japa.parser.ast.body.Parameter parameter : parameters) {
-                        int iParamModifier = parameter.getModifiers();
-                        getLog().info("paramModifier:" + java.lang.reflect.Modifier.toString(iParamModifier));
-                        String paramType = parameter.getType().toString();
-                        getLog().info("paramType:" + paramType);
-                        VariableDeclaratorId varId = parameter.getId();
-                        String varName = varId.getName();
-                        getLog().info("varName:" + varName);
-                    }
-                }
+                classTypeBuilder.buildMethod(methodName+Consts.TEST_SUFFIX, methodDeclaration);
             }
+
+            compilationUnitBuilder.buildClass(classTypeBuilder.build());
         }
 
+        CompilationUnit testCompilationUnit = compilationUnitBuilder.build();
 
+        //写入测试代码文件
+        TestGenerator.writeJavaTest(testDir, testCompilationUnit);
     }
 
 }

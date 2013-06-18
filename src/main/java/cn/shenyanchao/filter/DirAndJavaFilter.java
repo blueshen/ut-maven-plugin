@@ -1,5 +1,7 @@
 package cn.shenyanchao.filter;
 
+import cn.shenyanchao.common.Consts;
+
 import java.io.File;
 import java.io.FilenameFilter;
 
@@ -12,10 +14,9 @@ import java.io.FilenameFilter;
  */
 public class DirAndJavaFilter implements FilenameFilter{
 
-    private static final String JAVA_SUFFIX = ".java";
 
     @Override
     public boolean accept(File dir, String name) {
-        return !(name.equals("package-info.java"))&&(dir.isDirectory() || name.endsWith(JAVA_SUFFIX));
+        return !(name.equals("package-info.java"))&&(dir.isDirectory() || name.endsWith(Consts.JAVA_SUFFIX));
     }
 }

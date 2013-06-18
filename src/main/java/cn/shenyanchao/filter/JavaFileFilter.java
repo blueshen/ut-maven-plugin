@@ -1,5 +1,6 @@
 package cn.shenyanchao.filter;
 
+import cn.shenyanchao.common.Consts;
 import org.apache.commons.io.filefilter.IOFileFilter;
 
 import java.io.File;
@@ -13,12 +14,11 @@ import java.io.File;
  */
 public class JavaFileFilter implements IOFileFilter {
 
-    private static final String JAVA_SUFFIX = ".java";
 
     @Override
     public boolean accept(File file) {
         String name =file.getName();
-        return !file.isHidden()&&!(name.equals("package-info.java")) && name.endsWith(JAVA_SUFFIX);
+        return !file.isHidden()&&!(name.equals("package-info.java")) && name.endsWith(Consts.JAVA_SUFFIX);
     }
 
     @Override
