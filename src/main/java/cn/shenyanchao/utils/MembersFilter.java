@@ -25,7 +25,7 @@ public class MembersFilter {
             if (body instanceof MethodDeclaration) {
                 methodDeclarations.add((MethodDeclaration) body);
             } else if (body instanceof FieldDeclaration) {
-
+                  continue;
             }
         }
         return methodDeclarations;

@@ -98,7 +98,7 @@ public class AstGenerator extends AbstractMojo {
         List typeList = compilationUnit.getTypes();
         for (Object type : typeList) {
             TypeDeclaration typeDeclaration = (TypeDeclaration) type;
-            String className = typeDeclaration.getName().toString();
+            String className = typeDeclaration.getName();
             getLog().info("className:" + className);
             ClassTypeBuilder classTypeBuilder = new ClassTypeBuilder(className + Consts.TEST_SUFFIX);
             //process methods

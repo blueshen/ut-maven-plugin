@@ -39,7 +39,4 @@ public class TestGenerator {
         LOG.debug(testCompilationUnit.toString());
     }
 
-    private static void ifExistDonnotOverride() {
-
-    }
 }
