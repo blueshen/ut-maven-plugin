@@ -39,7 +39,4 @@ public class FileCheck {
         return false;
     }
 
-    public static void main(String[] args) {
-        FileCheck fileCheck = new FileCheck();
-    }
 }

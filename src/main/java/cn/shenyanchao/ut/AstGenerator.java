@@ -74,7 +74,10 @@ public class AstGenerator extends AbstractMojo {
             getLog().error(dir.getAbsolutePath() + "is not a directory!");
         }
         if (!dir.exists()) {
-            dir.mkdirs();
+            boolean success = false;
+            while (!success) {
+                success = dir.mkdirs();
+            }
         }
     }
 
