@@ -12,11 +12,11 @@ import java.io.FilenameFilter;
  *         Date:  6/14/13
  *         Time:  4:19 PM
  */
-public class DirAndJavaFilter implements FilenameFilter{
+public class DirAndJavaFilter implements FilenameFilter {
 
 
     @Override
     public boolean accept(File dir, String name) {
-        return !(name.equals("package-info.java"))&&(dir.isDirectory() || name.endsWith(Consts.JAVA_SUFFIX));
+        return !(name.equals("package-info.java")) && (dir.isDirectory() || name.endsWith(Consts.JAVA_SUFFIX));
     }
 }

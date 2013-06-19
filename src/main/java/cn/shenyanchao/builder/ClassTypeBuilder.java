@@ -1,12 +1,17 @@
 package cn.shenyanchao.builder;
 
 import japa.parser.ASTHelper;
-import japa.parser.ast.body.*;
-import japa.parser.ast.expr.*;
+import japa.parser.ast.body.ClassOrInterfaceDeclaration;
+import japa.parser.ast.body.JavadocComment;
+import japa.parser.ast.body.MethodDeclaration;
+import japa.parser.ast.body.ModifierSet;
+import japa.parser.ast.expr.AnnotationExpr;
+import japa.parser.ast.expr.MemberValuePair;
+import japa.parser.ast.expr.NameExpr;
+import japa.parser.ast.expr.NormalAnnotationExpr;
 import japa.parser.ast.stmt.BlockStmt;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,13 +35,13 @@ public class ClassTypeBuilder {
         return this;
     }
 
-    public ClassTypeBuilder buildMethod(String methodName, MethodDeclaration method,String... params) {
+    public ClassTypeBuilder buildMethod(String methodName, MethodDeclaration method, String... params) {
 
         method.setName(methodName);
 //        MarkerAnnotationExpr markerAnnotationExpr = new MarkerAnnotationExpr(new NameExpr("Test"));
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-        memberValuePairs.add(new MemberValuePair("description",new NameExpr("申艳超的测试用例")));
-        NormalAnnotationExpr normalAnnotationExpr = new NormalAnnotationExpr(new NameExpr("Test"),null);
+        memberValuePairs.add(new MemberValuePair("description", new NameExpr("申艳超的测试用例")));
+        NormalAnnotationExpr normalAnnotationExpr = new NormalAnnotationExpr(new NameExpr("Test"), null);
         List<AnnotationExpr> annotationExprList = new ArrayList<AnnotationExpr>();
 //        annotationExprList.add(markerAnnotationExpr);
         annotationExprList.add(normalAnnotationExpr);

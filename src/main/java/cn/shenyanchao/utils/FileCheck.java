@@ -1,6 +1,12 @@
 package cn.shenyanchao.utils;
 
-import org.apache.commons.io.FileUtils;
+import cn.shenyanchao.common.Consts;
+import japa.parser.ast.CompilationUnit;
+import japa.parser.ast.body.MethodDeclaration;
+import japa.parser.ast.body.TypeDeclaration;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +17,29 @@ import org.apache.commons.io.FileUtils;
  */
 public class FileCheck {
 
-    public static void main(String[] args) {
+    public boolean isTestJavaClassExist(File file) {
+        if (!file.isDirectory()) {
+            return file.exists();
+        }
+        return false;
+    }
 
+
+    public boolean isTestCaseExist(File testJavaFile, MethodDeclaration method) {
+        CompilationUnit testCompilationUnit = JavaParserFactory.getCompilationUnit(testJavaFile, Consts.DEFAULT_ENCODE);
+        List<TypeDeclaration> types = testCompilationUnit.getTypes();
+        for (TypeDeclaration type : types) {
+            List<MethodDeclaration> methodDeclarations = MembersFilter.findMethodsFrom(type);
+            for (MethodDeclaration methodDeclaration : methodDeclarations) {
+                if ((method.getName() + Consts.TEST_SUFFIX).equals(methodDeclaration.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        FileCheck fileCheck = new FileCheck();
     }
 }

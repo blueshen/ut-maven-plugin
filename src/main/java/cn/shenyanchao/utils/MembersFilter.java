@@ -18,16 +18,16 @@ import java.util.List;
 public class MembersFilter {
 
 
-    public static List<MethodDeclaration> findMethodsFrom(TypeDeclaration typeDeclaration){
+    public static List<MethodDeclaration> findMethodsFrom(TypeDeclaration typeDeclaration) {
         List<BodyDeclaration> members = typeDeclaration.getMembers();
         List<MethodDeclaration> methodDeclarations = new ArrayList<MethodDeclaration>();
         for (BodyDeclaration body : members) {
             if (body instanceof MethodDeclaration) {
                 methodDeclarations.add((MethodDeclaration) body);
-            }else if (body instanceof FieldDeclaration){
+            } else if (body instanceof FieldDeclaration) {
 
             }
         }
-        return  methodDeclarations;
+        return methodDeclarations;
     }
 }

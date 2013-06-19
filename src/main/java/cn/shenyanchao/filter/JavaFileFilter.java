@@ -17,8 +17,8 @@ public class JavaFileFilter implements IOFileFilter {
 
     @Override
     public boolean accept(File file) {
-        String name =file.getName();
-        return !file.isHidden()&&!(name.equals("package-info.java")) && name.endsWith(Consts.JAVA_SUFFIX);
+        String name = file.getName();
+        return !file.isHidden() && !(name.equals("package-info.java")) && name.endsWith(Consts.JAVA_SUFFIX);
     }
 
     @Override

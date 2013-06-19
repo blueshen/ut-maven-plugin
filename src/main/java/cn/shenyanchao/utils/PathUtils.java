@@ -11,7 +11,7 @@ import java.io.File;
  */
 public class PathUtils {
 
-    public static String packageToPath(final String packageName){
+    public static String packageToPath(final String packageName) {
         String path = packageName.replaceAll("[.]", File.separator);
         return path;
     }

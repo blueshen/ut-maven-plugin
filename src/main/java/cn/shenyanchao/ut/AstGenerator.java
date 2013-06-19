@@ -10,14 +10,9 @@ import cn.shenyanchao.utils.JavaParserFactory;
 import cn.shenyanchao.utils.MembersFilter;
 import cn.shenyanchao.utils.PackageUtils;
 import japa.parser.ast.CompilationUnit;
-import japa.parser.ast.ImportDeclaration;
 import japa.parser.ast.PackageDeclaration;
-import japa.parser.ast.body.BodyDeclaration;
 import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.body.TypeDeclaration;
-import japa.parser.ast.body.VariableDeclaratorId;
-import japa.parser.ast.expr.AnnotationExpr;
-import japa.parser.ast.expr.NameExpr;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.maven.plugin.AbstractMojo;
@@ -28,8 +23,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -113,7 +106,7 @@ public class AstGenerator extends AbstractMojo {
 
                 String methodName = methodDeclaration.getName();
                 getLog().info("methodName:" + methodDeclaration.getName());
-                classTypeBuilder.buildMethod(methodName+Consts.TEST_SUFFIX, methodDeclaration);
+                classTypeBuilder.buildMethod(methodName + Consts.TEST_SUFFIX, methodDeclaration);
             }
 
             compilationUnitBuilder.buildClass(classTypeBuilder.build());
