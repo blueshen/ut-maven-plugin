@@ -13,7 +13,7 @@ public class CommandInvoker {
 
     private AbstractCommand command;
 
-    public void setCommand(AbstractCommand command) {
+    public CommandInvoker(AbstractCommand command) {
         this.command = command;
     }
 
