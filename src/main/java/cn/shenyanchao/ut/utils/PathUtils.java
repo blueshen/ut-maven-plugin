@@ -1,4 +1,4 @@
-package cn.shenyanchao.utils;
+package cn.shenyanchao.ut.utils;
 
 import java.io.File;
 
@@ -6,8 +6,8 @@ import java.io.File;
  * Created with IntelliJ IDEA.
  *
  * @author shenyanchao
- *         Date:  6/17/13
- *         Time:  1:32 PM
+ * Date:  6/17/13
+ * Time:  1:32 PM
  */
 public class PathUtils {
 

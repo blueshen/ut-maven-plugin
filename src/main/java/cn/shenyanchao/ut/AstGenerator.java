@@ -1,18 +1,18 @@
 package cn.shenyanchao.ut;
 
-import cn.shenyanchao.builder.ClassTypeBuilder;
-import cn.shenyanchao.builder.CompilationUnitBuilder;
-import cn.shenyanchao.common.Consts;
-import cn.shenyanchao.common.FileComments;
-import cn.shenyanchao.filter.JavaFileFilter;
-import cn.shenyanchao.generator.TestGenerator;
-import cn.shenyanchao.utils.JavaParserFactory;
-import cn.shenyanchao.utils.MembersFilter;
-import cn.shenyanchao.utils.PackageUtils;
+import cn.shenyanchao.ut.builder.CompilationUnitBuilder;
+import cn.shenyanchao.ut.command.ExistTestCommand;
+import cn.shenyanchao.ut.command.NewTestCommand;
+import cn.shenyanchao.ut.command.invoker.CommandInvoker;
+import cn.shenyanchao.ut.common.Consts;
+import cn.shenyanchao.ut.filter.JavaFileFilter;
+import cn.shenyanchao.ut.generator.TestWriter;
+import cn.shenyanchao.ut.receiver.ExistTestReceiver;
+import cn.shenyanchao.ut.receiver.NewTestReceiver;
+import cn.shenyanchao.ut.utils.FileChecker;
+import cn.shenyanchao.ut.utils.JavaParserFactory;
+import cn.shenyanchao.ut.utils.JavaParserUtils;
 import japa.parser.ast.CompilationUnit;
-import japa.parser.ast.PackageDeclaration;
-import japa.parser.ast.body.MethodDeclaration;
-import japa.parser.ast.body.TypeDeclaration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.maven.plugin.AbstractMojo;
@@ -24,7 +24,6 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -48,27 +47,28 @@ public class AstGenerator extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
 
-        getLog().info("############################################################");
         getLog().info(sourceDir);
         getLog().info(testDir);
-        getLog().info("############################################################");
 
         File sourceDirectory = new File(sourceDir);
-        File testDirectory = new File(testDir);
         makeDirIfNotExist(sourceDirectory);
+        File testDirectory = new File(testDir);
         makeDirIfNotExist(testDirectory);
 
         Iterator<File> fileItr = FileUtils.iterateFiles(sourceDirectory, new JavaFileFilter(), TrueFileFilter.INSTANCE);
         while (fileItr.hasNext()) {
             File javaFile = fileItr.next();
             getLog().info("start process file:" + javaFile.getAbsolutePath());
-            //todo
             //process java file
             convertJavaFile2Test(javaFile);
         }
     }
 
-
+    /**
+     * if dir not exist,create it
+     *
+     * @param dir
+     */
     private void makeDirIfNotExist(File dir) {
         if (!dir.isDirectory()) {
             getLog().error(dir.getAbsolutePath() + "is not a directory!");
@@ -82,43 +82,29 @@ public class AstGenerator extends AbstractMojo {
     }
 
 
+    /**
+     * @param javaFile
+     */
     private void convertJavaFile2Test(File javaFile) {
 
-        CompilationUnit compilationUnit = JavaParserFactory.getCompilationUnit(javaFile, sourceEncode);
+        CompilationUnit sourceCU = JavaParserFactory.getCompilationUnit(javaFile, sourceEncode);
 
-        CompilationUnitBuilder compilationUnitBuilder = new CompilationUnitBuilder();
-        compilationUnitBuilder.buildComment(FileComments.GENERATOR_COMMENT);
-        //process package
-        PackageDeclaration packageDeclaration = compilationUnit.getPackage();
-        String testPackageName = PackageUtils.getTestPackageNameFrom(packageDeclaration);
-        compilationUnitBuilder.buildPackage(testPackageName);
-        //process import
-
-        //process type
-        List typeList = compilationUnit.getTypes();
-        for (Object type : typeList) {
-            TypeDeclaration typeDeclaration = (TypeDeclaration) type;
-            String className = typeDeclaration.getName();
-            getLog().info("className:" + className);
-            ClassTypeBuilder classTypeBuilder = new ClassTypeBuilder(className + Consts.TEST_SUFFIX);
-            //process methods
-            List<MethodDeclaration> methodDeclarations = MembersFilter.findMethodsFrom(typeDeclaration);
-            for (MethodDeclaration methodDeclaration : methodDeclarations) {
-                //has method and add import
-                compilationUnitBuilder.buildImports(null);
-
-                String methodName = methodDeclaration.getName();
-                getLog().info("methodName:" + methodDeclaration.getName());
-                classTypeBuilder.buildMethod(methodName + Consts.TEST_SUFFIX, methodDeclaration);
-            }
-
-            compilationUnitBuilder.buildClass(classTypeBuilder.build());
+        CompilationUnitBuilder compilationUnitBuilder = null;
+        String testJavaFileName = JavaParserUtils.findTestJavaFileName(sourceCU, javaFile, testDir);
+        boolean testExist = FileChecker.isTestJavaClassExist(new File(testJavaFileName));
+        CommandInvoker invoker = new CommandInvoker();
+        if (!testExist) {
+            invoker.setCommand(new NewTestCommand(new NewTestReceiver(sourceCU, javaFile)));
+            compilationUnitBuilder = invoker.action();
+        } else if (testExist) {
+            CompilationUnit testCU = JavaParserFactory.getCompilationUnit(new File(testJavaFileName), sourceEncode);
+            invoker.setCommand(new ExistTestCommand(new ExistTestReceiver(sourceCU, javaFile, testCU)));
+            compilationUnitBuilder = invoker.action();
         }
 
-        CompilationUnit testCompilationUnit = compilationUnitBuilder.build();
-
+        CompilationUnit testCU = compilationUnitBuilder.build();
         //写入测试代码文件
-        TestGenerator.writeJavaTest(testDir, testCompilationUnit);
+        TestWriter.writeJavaTest(testJavaFileName, testCU.toString(), sourceEncode);
     }
 
 }

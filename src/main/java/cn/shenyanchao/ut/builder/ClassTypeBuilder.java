@@ -1,4 +1,4 @@
-package cn.shenyanchao.builder;
+package cn.shenyanchao.ut.builder;
 
 import japa.parser.ASTHelper;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
@@ -40,14 +40,21 @@ public class ClassTypeBuilder {
         method.setName(methodName);
 //        MarkerAnnotationExpr markerAnnotationExpr = new MarkerAnnotationExpr(new NameExpr("Test"));
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-        memberValuePairs.add(new MemberValuePair("description", new NameExpr("申艳超的测试用例")));
-        NormalAnnotationExpr normalAnnotationExpr = new NormalAnnotationExpr(new NameExpr("Test"), null);
+        memberValuePairs.add(new MemberValuePair("description", new NameExpr("\"申艳超的测试用例\"")));
+        NormalAnnotationExpr normalAnnotationExpr = new NormalAnnotationExpr(new NameExpr("Test"), memberValuePairs);
         List<AnnotationExpr> annotationExprList = new ArrayList<AnnotationExpr>();
 //        annotationExprList.add(markerAnnotationExpr);
         annotationExprList.add(normalAnnotationExpr);
-        method.getParameters().clear();
+        if (null != method.getParameters()) {
+            method.getParameters().clear();
+        }
         method.setAnnotations(annotationExprList);
         method.setBody(new BlockStmt());
+        ASTHelper.addMember(type, method);
+        return this;
+    }
+
+    public ClassTypeBuilder addMethod(MethodDeclaration method) {
         ASTHelper.addMember(type, method);
         return this;
     }

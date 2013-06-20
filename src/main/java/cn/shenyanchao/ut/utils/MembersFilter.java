@@ -1,4 +1,4 @@
-package cn.shenyanchao.utils;
+package cn.shenyanchao.ut.utils;
 
 import japa.parser.ast.body.BodyDeclaration;
 import japa.parser.ast.body.FieldDeclaration;
@@ -12,8 +12,8 @@ import java.util.List;
  * Created with IntelliJ IDEA.
  *
  * @author shenyanchao
- *         Date:  6/18/13
- *         Time:  1:33 PM
+ * Date:  6/18/13
+ * Time:  1:33 PM
  */
 public class MembersFilter {
 

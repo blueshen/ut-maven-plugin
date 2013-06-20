@@ -1,6 +1,6 @@
-package cn.shenyanchao.utils.test;
+package cn.shenyanchao.ut.utils.test;
 
-import cn.shenyanchao.utils.PathUtils;
+import cn.shenyanchao.ut.utils.PathUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

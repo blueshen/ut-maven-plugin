@@ -11,9 +11,20 @@
 public class DefaultPackageType {
 
 
-    public  void justs(final int age) {
+    public void justs(final int age) {
 
         System.out.println("shenyanchao");
+
+    }
+
+    public void sayHello(String name) {
+        System.out.println("hello" + name);
+    }
+}
+
+class Shenyanchao {
+
+    public void innerMethod() {
 
     }
 }

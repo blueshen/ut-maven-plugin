@@ -1,6 +1,7 @@
-package cn.shenyanchao.builder;
+package cn.shenyanchao.ut.builder;
 
 import japa.parser.ASTHelper;
+import japa.parser.ast.Comment;
 import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.ImportDeclaration;
 import japa.parser.ast.PackageDeclaration;
@@ -8,7 +9,7 @@ import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.JavadocComment;
 import japa.parser.ast.expr.NameExpr;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,8 +24,17 @@ public class CompilationUnitBuilder {
     private CompilationUnit cu = new CompilationUnit();
 
     public CompilationUnitBuilder buildComment(String commentStr) {
-        JavadocComment comment = new JavadocComment(commentStr);
-        cu.setComment(comment);
+        Comment comment = new JavadocComment(commentStr);
+        if (null != cu.getComments()) {
+            cu.getComments().add(comment);
+        } else {
+            cu.setComment(comment);
+        }
+        return this;
+    }
+
+    public CompilationUnitBuilder addComments(List<Comment> comments) {
+        cu.setComments(comments);
         return this;
     }
 
@@ -33,10 +43,25 @@ public class CompilationUnitBuilder {
         return this;
     }
 
+    public CompilationUnitBuilder addPackage(PackageDeclaration packageDeclaration) {
+        cu.setPackage(packageDeclaration);
+        return this;
+    }
+
     public CompilationUnitBuilder buildImports(String[] imports) {
-        List<ImportDeclaration> importList = new ArrayList<ImportDeclaration>();
-        importList.add(new ImportDeclaration(new NameExpr("org.testng.annotations.Test"), false, false));
-        cu.setImports(importList);
+
+        ImportDeclaration importDeclaration = new ImportDeclaration(new NameExpr("org.testng.annotations.Test"),
+                false, false);
+        if (null != cu.getImports()) {
+            cu.getImports().add(importDeclaration);
+        } else {
+            cu.setImports(Arrays.asList(importDeclaration));
+        }
+        return this;
+    }
+
+    public CompilationUnitBuilder addImports(List<ImportDeclaration> imports) {
+        cu.setImports(imports);
         return this;
     }
 

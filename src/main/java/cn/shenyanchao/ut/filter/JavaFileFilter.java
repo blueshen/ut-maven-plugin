@@ -1,6 +1,6 @@
-package cn.shenyanchao.filter;
+package cn.shenyanchao.ut.filter;
 
-import cn.shenyanchao.common.Consts;
+import cn.shenyanchao.ut.common.Consts;
 import org.apache.commons.io.filefilter.IOFileFilter;
 
 import java.io.File;
@@ -9,8 +9,8 @@ import java.io.File;
  * Created with IntelliJ IDEA.
  *
  * @author shenyanchao
- *         Date:  6/15/13
- *         Time:  4:36 PM
+ * Date:  6/15/13
+ * Time:  4:36 PM
  */
 public class JavaFileFilter implements IOFileFilter {
 

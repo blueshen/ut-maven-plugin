@@ -1,4 +1,4 @@
-package cn.shenyanchao.utils;
+package cn.shenyanchao.ut.utils;
 
 import japa.parser.JavaParser;
 import japa.parser.ParseException;
@@ -13,8 +13,8 @@ import java.io.IOException;
  * Created with IntelliJ IDEA.
  *
  * @author shenyanchao
- *         Date:  6/15/13
- *         Time:  3:22 PM
+ * Date:  6/15/13
+ * Time:  3:22 PM
  */
 public class JavaParserFactory {
 
