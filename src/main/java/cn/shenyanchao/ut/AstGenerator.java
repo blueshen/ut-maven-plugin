@@ -102,9 +102,11 @@ public class AstGenerator extends AbstractMojo {
             compilationUnitBuilder = invoker.action();
         }
 
-        CompilationUnit testCU = compilationUnitBuilder.build();
-        //写入测试代码文件
-        TestWriter.writeJavaTest(testJavaFileName, testCU.toString(), sourceEncode);
+        if (null != compilationUnitBuilder){
+            CompilationUnit testCU = compilationUnitBuilder.build();
+            //写入测试代码文件
+            TestWriter.writeJavaTest(testJavaFileName, testCU.toString(), sourceEncode);
+        }
     }
 
 }
