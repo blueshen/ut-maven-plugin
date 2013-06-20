@@ -97,7 +97,8 @@ public class AstGenerator extends AbstractMojo {
             compilationUnitBuilder = invoker.action();
         } else if (testExist) {
             CompilationUnit testCU = JavaParserFactory.getCompilationUnit(new File(testJavaFileName), sourceEncode);
-            CommandInvoker invoker = new CommandInvoker(new ExistTestCommand(new ExistTestReceiver(sourceCU, javaFile, testCU)));
+            CommandInvoker invoker = new CommandInvoker(new ExistTestCommand(new ExistTestReceiver(sourceCU, javaFile,
+                    testCU)));
             compilationUnitBuilder = invoker.action();
         }
 
