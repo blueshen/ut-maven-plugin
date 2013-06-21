@@ -2,13 +2,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.shenyanchao.ut</groupId>
     <artifactId>ut-maven-plugin</artifactId>
-    <version>0.2.3-SNAPSHOT</version>
+    <version>0.2.5-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
     <name>ut-maven-plugin</name>
     <description>Maven Plugin for Generate Unit Test Code Framework</description>
     <url>http://www.shenyanchao.cn</url>
     <developers>
         <developer>
+            <id>shenyanchao</id>
             <name>ShenYanchao</name>
             <email>zhiyi.shen@gmail.com</email>
         </developer>
