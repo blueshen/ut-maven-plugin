@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
@@ -10,7 +11,7 @@
     <version>0.2.10-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
     <name>ut-maven-plugin</name>
-    <description>Maven Plugin for Generate Unit Test Code Framework</description>
+    <description>Maven Plugin for Generate Unit Test Code </description>
     <url>http://www.shenyanchao.cn</url>
     <developers>
         <developer>
@@ -38,16 +39,15 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
+    <scm>
+        <connection>scm:git:git@github.com:blueshen/ut-maven-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:blueshen/ut-maven-plugin.git</developerConnection>
+        <url>git@github.com:blueshen/ut-maven-plugin.git</url>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <scm>
-        <connection>scm:git:git@github.com:blueshen/ut-maven-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:blueshen/ut-maven-plugin.git</developerConnection>
-        <url>scm:git:git@github.com:blueshen/ut-maven-plugin.git</url>
-    </scm>
 
     <dependencies>
         <dependency>
@@ -261,14 +261,6 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.2.2</version>
-                <configuration>
-                    <arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
-                </configuration>
-            </plugin>-->
         </plugins>
     </build>
 
@@ -312,36 +304,5 @@
 
             </build>
         </profile>
-
-        <!--<profile>
-            <id>release-sign-artifacts</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.4</version>
-                        <configuration>
-                            <passphrase>${gpg.passphrase}</passphrase>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>-->
     </profiles>
 </project>
