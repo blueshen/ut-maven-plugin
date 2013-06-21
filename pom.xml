@@ -39,9 +39,9 @@
     </properties>
 
     <scm>
-        <connection>scm:git:git://github.com/blueshen/ut-maven-plugin.git</connection>
+        <connection>scm:git:git@github.com:blueshen/ut-maven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:blueshen/ut-maven-plugin.git</developerConnection>
-        <url>https://github.com/blueshen/ut-maven-plugin</url>
+        <url>scm:git:git@github.com:blueshen/ut-maven-plugin.git</url>
     </scm>
 
     <dependencies>
