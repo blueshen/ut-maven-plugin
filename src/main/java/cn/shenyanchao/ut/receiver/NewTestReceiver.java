@@ -7,10 +7,15 @@ import cn.shenyanchao.ut.common.FileComments;
 import cn.shenyanchao.ut.utils.JavaParserUtils;
 import cn.shenyanchao.ut.utils.MembersFilter;
 import japa.parser.ast.CompilationUnit;
+import japa.parser.ast.ImportDeclaration;
 import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.body.TypeDeclaration;
+import japa.parser.ast.expr.NameExpr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,6 +24,8 @@ import java.util.List;
  *         Time:  7:14 PM
  */
 public class NewTestReceiver extends AbstractReceiver {
+
+    private static final Logger LOG = LoggerFactory.getLogger(NewTestReceiver.class);
 
     private CompilationUnit sourceCU;
 
@@ -43,8 +50,13 @@ public class NewTestReceiver extends AbstractReceiver {
         ClassTypeBuilder classTypeBuilder = new ClassTypeBuilder(className + Consts.TEST_SUFFIX);
         compilationUnitBuilder.buildComment(FileComments.GENERATOR_COMMENT);
         compilationUnitBuilder.buildPackage(testPackageName);
-        //process import
-        compilationUnitBuilder.buildImports(null);
+        //process test import
+        compilationUnitBuilder.buildTestNGImports();
+
+        compilationUnitBuilder.buildImports(sourceCU.getImports());
+        ImportDeclaration pkgImport = new ImportDeclaration(new NameExpr(sourceCU.getPackage().getName().toString()),
+                false, true);
+        compilationUnitBuilder.buildImports(Arrays.asList(pkgImport));
         //process methods
         for (MethodDeclaration methodDeclaration : methodDeclarations) {
             String methodName = methodDeclaration.getName();

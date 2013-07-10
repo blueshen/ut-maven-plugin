@@ -7,8 +7,6 @@ import japa.parser.ast.expr.NameExpr;
 import java.io.File;
 
 /**
- * Created with IntelliJ IDEA.
- *
  * @author shenyanchao
  *         Date:  6/18/13
  *         Time:  1:48 PM

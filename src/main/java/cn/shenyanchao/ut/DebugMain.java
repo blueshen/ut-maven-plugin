@@ -1,5 +1,12 @@
 package cn.shenyanchao.ut;
 
+/**
+ * Date:  13-7-10
+ * Time:  下午1:06
+ *
+ * @author shenyanchao
+ */
+
 import cn.shenyanchao.ut.builder.CompilationUnitBuilder;
 import cn.shenyanchao.ut.command.ExistTestCommand;
 import cn.shenyanchao.ut.command.NewTestCommand;
@@ -15,35 +22,35 @@ import cn.shenyanchao.ut.utils.JavaParserUtils;
 import japa.parser.ast.CompilationUnit;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Iterator;
 
 /**
- *
  * @author shenyanchao
  *         Date:  6/13/13
  *         Time:  5:13 PM
  */
-@Mojo(name = "source2test", defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES)
-public class AstGenerator extends AbstractMojo {
 
-    @Parameter(defaultValue = Consts.DEFAULT_ENCODE, property = "sourceEncode", required = false)
-    private String sourceEncode;
+public class DebugMain {
 
-    @Parameter(defaultValue = "${project.build.sourceDirectory}", property = "sourceDir", required = false)
-    private String sourceDir;
+    private String fFlag;
 
-    @Parameter(defaultValue = "${project.build.testSourceDirectory}", property = "testDir", required = false)
-    private String testDir;
+    private String sourceEncode = Consts.DEFAULT_ENCODE;
 
-    @Override
+
+    private String sourceDir = "/home/shenyanchao/IdeaProjects/ut-maven-plugin/src/it/spring-petclinic/src/main/java";
+
+    private String testDir = "/home/shenyanchao/IdeaProjects/ut-maven-plugin/src/it/spring-petclinic/src/test/java";
+
+    private Logger getLog() {
+        return LoggerFactory.getLogger(DebugMain.class);
+    }
+
     public void execute() throws MojoExecutionException, MojoFailureException {
 
         getLog().info(sourceDir);
@@ -101,11 +108,21 @@ public class AstGenerator extends AbstractMojo {
             compilationUnitBuilder = invoker.action();
         }
 
-        if (null != compilationUnitBuilder){
+        if (null != compilationUnitBuilder) {
             CompilationUnit testCU = compilationUnitBuilder.build();
             //写入测试代码文件
             TestWriter.writeJavaTest(testJavaFileName, testCU.toString(), sourceEncode);
         }
     }
 
+    public static void main(String[] args) {
+        try {
+            new DebugMain().execute();
+        } catch (MojoExecutionException mojoException) {
+            //ignore
+        } catch (MojoFailureException mojoFailException) {
+            //ignore
+        }
+    }
 }
+

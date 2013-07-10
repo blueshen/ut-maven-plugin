@@ -5,6 +5,8 @@
 
 Maven Plugin for Generate Unit Test Code Template
 
+>This is not aim to solve the whole unit test,but simple generate the neccessary code.
+
 ###Usage:
     <plugin>
         <groupId>cn.shenyanchao.ut</groupId>
@@ -13,7 +15,7 @@ Maven Plugin for Generate Unit Test Code Template
         <executions>
             <execution>
                 <id>source2test</id>
-                <phase>generate-sources</phase>
+                <phase>process-test-sources</phase>
                 <goals>
                     <goal>source2test</goal>
                 </goals>

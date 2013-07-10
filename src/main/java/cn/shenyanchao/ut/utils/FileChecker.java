@@ -9,7 +9,6 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
  *
  * @author shenyanchao
  * Date:  6/18/13

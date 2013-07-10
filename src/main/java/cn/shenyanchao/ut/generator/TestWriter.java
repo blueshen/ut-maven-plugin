@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 /**
- * Created with IntelliJ IDEA.
  *
  * @author shenyanchao
  *         Date:  6/18/13

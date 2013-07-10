@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <jmxConfigurator/>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80}:[%line] - %msg%n
+            </pattern>
+        </layout>
+    </appender>
+    <appender name="file"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/ut-maven-plugin.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/ut-maven-plugin.%d{yyyy-MM-dd}.zip
+            </fileNamePattern>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80}:[%line] - %msg%n</pattern>
+        </layout>
+    </appender>
+    <logger name="org.apache.http">
+        <level value="INFO"/>
+    </logger>
+
+    <root>
+        <level value="DEBUG"/>
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="file"/>
+    </root>
+</configuration>
+

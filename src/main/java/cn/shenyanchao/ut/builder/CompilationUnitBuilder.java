@@ -9,11 +9,11 @@ import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.JavadocComment;
 import japa.parser.ast.expr.NameExpr;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- *
  * @author shenyanchao
  *         Date:  6/15/13
  *         Time:  3:29 PM
@@ -47,20 +47,31 @@ public class CompilationUnitBuilder {
         return this;
     }
 
-    public CompilationUnitBuilder buildImports(String[] imports) {
+    public CompilationUnitBuilder buildTestNGImports() {
 
         ImportDeclaration importDeclaration = new ImportDeclaration(new NameExpr("org.testng.annotations.Test"),
                 false, false);
-        if (null != cu.getImports()) {
-            cu.getImports().add(importDeclaration);
-        } else {
-            cu.setImports(Arrays.asList(importDeclaration));
-        }
+        buildImports(Arrays.asList(importDeclaration));
         return this;
     }
 
-    public CompilationUnitBuilder addImports(List<ImportDeclaration> imports) {
-        cu.setImports(imports);
+    public CompilationUnitBuilder buildMockitoImports() {
+
+        ImportDeclaration importDeclaration = new ImportDeclaration(new NameExpr("org.mockito"),
+                true, true);
+        buildImports(Arrays.asList(importDeclaration));
+        return this;
+    }
+
+    public CompilationUnitBuilder buildImports(List<ImportDeclaration> importDeclarations) {
+        if (null == cu.getImports()) {
+            cu.setImports(importDeclarations);
+        } else {
+            List<ImportDeclaration> existImport = cu.getImports();
+            existImport = new ArrayList<ImportDeclaration>(existImport);
+            existImport.addAll(importDeclarations);
+            cu.setImports(existImport);
+        }
         return this;
     }
 

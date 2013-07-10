@@ -38,8 +38,8 @@ public class ClassTypeBuilder {
         method.setName(methodName);
 //        MarkerAnnotationExpr markerAnnotationExpr = new MarkerAnnotationExpr(new NameExpr("Test"));
         List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-        memberValuePairs.add(new MemberValuePair("description", new NameExpr("\"申艳超的测试用例\"")));
-        NormalAnnotationExpr normalAnnotationExpr = new NormalAnnotationExpr(new NameExpr("Test"), memberValuePairs);
+//        memberValuePairs.add(new MemberValuePair("description", new NameExpr("\"申艳超的测试用例\"")));
+        NormalAnnotationExpr normalAnnotationExpr = new NormalAnnotationExpr(new NameExpr("Test"),null);
         List<AnnotationExpr> annotationExprList = new ArrayList<AnnotationExpr>();
 //        annotationExprList.add(markerAnnotationExpr);
         annotationExprList.add(normalAnnotationExpr);

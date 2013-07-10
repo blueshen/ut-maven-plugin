@@ -13,9 +13,14 @@ import japa.parser.ast.ImportDeclaration;
 import japa.parser.ast.PackageDeclaration;
 import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.body.TypeDeclaration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Date:  6/20/13
@@ -24,6 +29,8 @@ import java.util.List;
  * @author shenyanchao
  */
 public class ExistTestReceiver extends AbstractReceiver {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ExistTestReceiver.class);
 
     private CompilationUnit sourceCU;
 
@@ -52,7 +59,15 @@ public class ExistTestReceiver extends AbstractReceiver {
         compilationUnitBuilder.addPackage(existPackageDeclaration);
         //process import
         List<ImportDeclaration> existImports = testCU.getImports();
-        compilationUnitBuilder.addImports(existImports);
+        List<ImportDeclaration> sourceImports = sourceCU.getImports();
+        Set<ImportDeclaration> importSet = new HashSet<ImportDeclaration>();
+        importSet.addAll(new ArrayList<ImportDeclaration>(existImports));
+        importSet.addAll(new ArrayList<ImportDeclaration>(sourceImports));
+        List<ImportDeclaration> targetImports = new ArrayList<ImportDeclaration>();
+        for (ImportDeclaration impt : importSet) {
+            targetImports.add(impt);
+        }
+        compilationUnitBuilder.buildImports(targetImports);
         //process methods
         for (MethodDeclaration methodDeclaration : methodDeclarations) {
             String methodName = methodDeclaration.getName();
@@ -61,6 +76,9 @@ public class ExistTestReceiver extends AbstractReceiver {
             boolean methodExist = (testMethodDeclaration == null ? false : true);
             if (!methodExist) {
                 classTypeBuilder.buildMethod(methodName + Consts.TEST_SUFFIX, methodDeclaration);
+//                ImportDeclaration returnTypeImport = MethodUtils.findReferenceReturnTypeFrom(methodDeclaration,
+//                        sourceCU.getImports());
+//                compilationUnitBuilder.buildImports(Arrays.asList(returnTypeImport));
             } else if (methodExist) {
                 classTypeBuilder.addMethod(testMethodDeclaration);
             }

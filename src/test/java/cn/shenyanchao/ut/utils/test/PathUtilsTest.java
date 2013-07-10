@@ -15,7 +15,7 @@ import java.io.File;
 public class PathUtilsTest {
 
 
-    @Test()
+    @Test
     public void packageToPathTest(){
         String packageName = "cn.shenyanchao.ut";
         String path = PathUtils.packageToPath(packageName);
