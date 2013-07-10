@@ -7,7 +7,6 @@ import org.testng.annotations.Test;
 import java.io.File;
 
 /**
- * Created with IntelliJ IDEA.
  *
  * @author shenyanchao
  *         Date:  6/17/13

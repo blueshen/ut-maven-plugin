@@ -18,10 +18,10 @@ import java.io.File;
 import java.util.List;
 
 /**
+ * Date:  6/20/13
+ * Time:  7:15 PM
+ *
  * @author shenyanchao
- *         <p/>
- *         Date:  6/20/13
- *         Time:  7:15 PM
  */
 public class ExistTestReceiver extends AbstractReceiver {
 

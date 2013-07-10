@@ -4,7 +4,6 @@ import cn.shenyanchao.ut.builder.CompilationUnitBuilder;
 
 /**
  * @author shenyanchao
- *         <p/>
  *         Date:  6/20/13
  *         Time:  7:16 PM
  */

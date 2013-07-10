@@ -32,7 +32,7 @@ import java.util.Iterator;
  *         Date:  6/13/13
  *         Time:  5:13 PM
  */
-@Mojo(name = "source2test", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
+@Mojo(name = "source2test", defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES)
 public class AstGenerator extends AbstractMojo {
 
     @Parameter(defaultValue = Consts.DEFAULT_ENCODE, property = "sourceEncode", required = false)

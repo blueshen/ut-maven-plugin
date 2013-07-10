@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- *
  * @author shenyanchao
  *         Date:  6/15/13
  *         Time:  3:50 PM

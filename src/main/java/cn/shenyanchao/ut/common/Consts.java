@@ -1,11 +1,9 @@
 package cn.shenyanchao.ut.common;
 
 /**
- * Created with IntelliJ IDEA.
- *
  * @author shenyanchao
- * Date:  6/18/13
- * Time:  1:21 PM
+ *         Date:  6/18/13
+ *         Time:  1:21 PM
  */
 public interface Consts {
 

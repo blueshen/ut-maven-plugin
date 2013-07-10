@@ -5,7 +5,6 @@ import cn.shenyanchao.ut.receiver.AbstractReceiver;
 
 /**
  * @author shenyanchao
- *         <p/>
  *         Date:  6/20/13
  *         Time:  7:17 PM
  */

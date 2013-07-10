@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
  *
  * @author shenyanchao
  *         Date:  6/15/13
