@@ -41,12 +41,12 @@ public class ClassTypeBuilder {
         List<AnnotationExpr> annotationExprList = new ArrayList<AnnotationExpr>();
         annotationExprList.add(markerAnnotationExpr);
         if (null != method.getParameters()) {
-            method.getParameters().clear();
+//            method.getParameters().clear();
         }
         method.setAnnotations(annotationExprList);
+        method.setType(ASTHelper.VOID_TYPE);
         method.setBody(new BlockStmt());
-        ASTHelper.addMember(type, method);
-        return this;
+        return addMethod(method);
     }
 
     public ClassTypeBuilder addMethod(MethodDeclaration method) {

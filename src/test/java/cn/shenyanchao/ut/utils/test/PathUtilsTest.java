@@ -16,7 +16,7 @@ public class PathUtilsTest {
 
 
     @Test
-    public void packageToPathTest(){
+    public void packageToPathTest(String id){
         String packageName = "cn.shenyanchao.ut";
         String path = PathUtils.packageToPath(packageName);
         Assert.assertEquals(path,"cn"+ File.separator+"shenyanchao"+File.separator+"ut");

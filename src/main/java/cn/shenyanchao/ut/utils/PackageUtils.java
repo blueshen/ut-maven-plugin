@@ -13,6 +13,11 @@ import java.io.File;
  */
 public class PackageUtils {
 
+    /**
+     * find what is test package
+     * @param packageDeclaration
+     * @return
+     */
     public static String getTestPackageNameFrom(PackageDeclaration packageDeclaration) {
         if (null == packageDeclaration) {
             return Consts.TEST_PACKAGE;
@@ -23,6 +28,13 @@ public class PackageUtils {
         }
     }
 
+    /**
+     * find what is the test java file name
+     * @param testDir
+     * @param testPackageName
+     * @param className
+     * @return
+     */
     public static String getTestJavaSourceName(String testDir, String testPackageName, String className) {
         StringBuilder sb = new StringBuilder();
         sb.append(testDir).append(File.separator);

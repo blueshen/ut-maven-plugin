@@ -27,7 +27,6 @@ import java.io.File;
 import java.util.Iterator;
 
 /**
- *
  * @author shenyanchao
  *         Date:  6/13/13
  *         Time:  5:13 PM
@@ -43,7 +42,6 @@ public class AstGenerator extends AbstractMojo {
 
     @Parameter(defaultValue = "${project.build.testSourceDirectory}", property = "testDir", required = false)
     private String testDir;
-
 
 
     @Override
@@ -62,7 +60,7 @@ public class AstGenerator extends AbstractMojo {
             File javaFile = fileItr.next();
             getLog().info("start process file:" + javaFile.getAbsolutePath());
             //process java file
-            if (ClassTools.isNeedTest(javaFile, sourceEncode)){
+            if (ClassTools.isNeedTest(javaFile, sourceEncode)) {
                 convertJavaFile2Test(javaFile);
             }
         }
@@ -106,7 +104,7 @@ public class AstGenerator extends AbstractMojo {
             compilationUnitBuilder = invoker.action();
         }
 
-        if (null != compilationUnitBuilder){
+        if (null != compilationUnitBuilder) {
             CompilationUnit testCU = compilationUnitBuilder.build();
             //写入测试代码文件
             TestWriter.writeJavaTest(testJavaFileName, testCU.toString(), sourceEncode);

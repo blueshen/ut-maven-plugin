@@ -16,6 +16,11 @@ import java.util.List;
 public class MembersFilter {
 
 
+    /**
+     * find all methods in TypeDeclaration
+     * @param typeDeclaration
+     * @return
+     */
     public static List<MethodDeclaration> findMethodsFrom(TypeDeclaration typeDeclaration) {
         List<BodyDeclaration> members = typeDeclaration.getMembers();
         List<MethodDeclaration> methodDeclarations = new ArrayList<MethodDeclaration>();
@@ -27,6 +32,11 @@ public class MembersFilter {
         return methodDeclarations;
     }
 
+    /**
+     * find all fileds in TypeDeclaration
+     * @param typeDeclaration
+     * @return
+     */
     public static List<FieldDeclaration> findFieldsFrom(TypeDeclaration typeDeclaration) {
         List<BodyDeclaration> members = typeDeclaration.getMembers();
         List<FieldDeclaration> fieldDeclarations = new ArrayList<FieldDeclaration>();

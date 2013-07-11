@@ -18,10 +18,9 @@
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80}:[%line] - %msg%n</pattern>
         </layout>
     </appender>
-    <logger name="org.apache.http">
-        <level value="INFO"/>
+    <logger name="cn.shenyanchao.ut">
+        <level value="DEBUG"/>
     </logger>
-
     <root>
         <level value="DEBUG"/>
         <appender-ref ref="stdout"/>
