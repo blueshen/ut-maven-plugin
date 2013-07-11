@@ -5,10 +5,7 @@ import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.JavadocComment;
 import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.body.ModifierSet;
-import japa.parser.ast.expr.AnnotationExpr;
-import japa.parser.ast.expr.MemberValuePair;
-import japa.parser.ast.expr.NameExpr;
-import japa.parser.ast.expr.NormalAnnotationExpr;
+import japa.parser.ast.expr.*;
 import japa.parser.ast.stmt.BlockStmt;
 
 import java.util.ArrayList;
@@ -36,13 +33,13 @@ public class ClassTypeBuilder {
     public ClassTypeBuilder buildMethod(String methodName, MethodDeclaration method, String... params) {
 
         method.setName(methodName);
-//        MarkerAnnotationExpr markerAnnotationExpr = new MarkerAnnotationExpr(new NameExpr("Test"));
-        List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
+        MarkerAnnotationExpr markerAnnotationExpr = new MarkerAnnotationExpr(new NameExpr("Test"));
+//        List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
 //        memberValuePairs.add(new MemberValuePair("description", new NameExpr("\"申艳超的测试用例\"")));
-        NormalAnnotationExpr normalAnnotationExpr = new NormalAnnotationExpr(new NameExpr("Test"),null);
+//        NormalAnnotationExpr normalAnnotationExpr = new NormalAnnotationExpr(new NameExpr("Test"),null);
+//        annotationExprList.add(normalAnnotationExpr);
         List<AnnotationExpr> annotationExprList = new ArrayList<AnnotationExpr>();
-//        annotationExprList.add(markerAnnotationExpr);
-        annotationExprList.add(normalAnnotationExpr);
+        annotationExprList.add(markerAnnotationExpr);
         if (null != method.getParameters()) {
             method.getParameters().clear();
         }

@@ -9,6 +9,7 @@ import cn.shenyanchao.ut.filter.JavaFileFilter;
 import cn.shenyanchao.ut.generator.TestWriter;
 import cn.shenyanchao.ut.receiver.ExistTestReceiver;
 import cn.shenyanchao.ut.receiver.NewTestReceiver;
+import cn.shenyanchao.ut.utils.ClassTools;
 import cn.shenyanchao.ut.utils.FileChecker;
 import cn.shenyanchao.ut.utils.JavaParserFactory;
 import cn.shenyanchao.ut.utils.JavaParserUtils;
@@ -43,6 +44,8 @@ public class AstGenerator extends AbstractMojo {
     @Parameter(defaultValue = "${project.build.testSourceDirectory}", property = "testDir", required = false)
     private String testDir;
 
+
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
 
@@ -59,7 +62,9 @@ public class AstGenerator extends AbstractMojo {
             File javaFile = fileItr.next();
             getLog().info("start process file:" + javaFile.getAbsolutePath());
             //process java file
-            convertJavaFile2Test(javaFile);
+            if (ClassTools.isNeedTest(javaFile, sourceEncode)){
+                convertJavaFile2Test(javaFile);
+            }
         }
     }
 
