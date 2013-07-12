@@ -137,6 +137,10 @@ public class Owner extends Person {
         return null;
     }
 
+    public String sayHi2Shenyanchao(){
+        return "hello,shenyanchao";
+    }
+
     @Override
     public String toString() {
         return new ToStringCreator(this)

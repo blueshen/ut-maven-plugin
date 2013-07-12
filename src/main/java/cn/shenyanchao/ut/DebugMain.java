@@ -67,7 +67,7 @@ public class DebugMain {
             File javaFile = fileItr.next();
             getLog().info("start process file:" + javaFile.getAbsolutePath());
             //process java file
-            if (ClassTools.isNeedTest(javaFile,sourceEncode)){
+            if (ClassTools.isNeedTest(javaFile, sourceEncode)) {
                 convertJavaFile2Test(javaFile);
             }
         }
@@ -107,7 +107,7 @@ public class DebugMain {
         } else if (testExist) {
             CompilationUnit testCU = JavaParserFactory.getCompilationUnit(new File(testJavaFileName), sourceEncode);
             CommandInvoker invoker = new CommandInvoker(new ExistTestCommand(new ExistTestReceiver(sourceCU, javaFile,
-                    testCU)));
+                    testCU, new File(testJavaFileName))));
             compilationUnitBuilder = invoker.action();
         }
 

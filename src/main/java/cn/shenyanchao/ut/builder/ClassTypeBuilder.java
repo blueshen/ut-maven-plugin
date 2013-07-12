@@ -20,6 +20,14 @@ public class ClassTypeBuilder {
 
     private ClassOrInterfaceDeclaration type = null;
 
+    public ClassTypeBuilder(){
+        type = new ClassOrInterfaceDeclaration();
+    }
+
+    public ClassTypeBuilder(ClassOrInterfaceDeclaration classOrInterfaceDeclaration){
+        this.type = classOrInterfaceDeclaration;
+    }
+
     public ClassTypeBuilder(String clazzName) {
         type = new ClassOrInterfaceDeclaration(ModifierSet.PUBLIC, false, clazzName);
     }

@@ -3,24 +3,18 @@ package cn.shenyanchao.ut.receiver;
 import cn.shenyanchao.ut.builder.ClassTypeBuilder;
 import cn.shenyanchao.ut.builder.CompilationUnitBuilder;
 import cn.shenyanchao.ut.common.Consts;
-import cn.shenyanchao.ut.common.FileComments;
 import cn.shenyanchao.ut.utils.FileChecker;
 import cn.shenyanchao.ut.utils.JavaParserUtils;
 import cn.shenyanchao.ut.utils.MembersFilter;
-import japa.parser.ast.Comment;
 import japa.parser.ast.CompilationUnit;
-import japa.parser.ast.ImportDeclaration;
-import japa.parser.ast.PackageDeclaration;
+import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.body.TypeDeclaration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Date:  6/20/13
@@ -34,40 +28,28 @@ public class ExistTestReceiver extends AbstractReceiver {
 
     private CompilationUnit sourceCU;
 
-    private CompilationUnit testCU;
-
     private File javaFile;
 
-    public ExistTestReceiver(CompilationUnit sourceCU, File javaFile, CompilationUnit testCU) {
+    private CompilationUnit testCU;
+
+    private File testJavaFile;
+
+    public ExistTestReceiver(CompilationUnit sourceCU, File javaFile, CompilationUnit testCU, File testJavaFile) {
         this.sourceCU = sourceCU;
         this.javaFile = javaFile;
         this.testCU = testCU;
+        this.testJavaFile = testJavaFile;
     }
 
     @Override
     public CompilationUnitBuilder createCU() {
-        CompilationUnitBuilder compilationUnitBuilder = new CompilationUnitBuilder();
-        compilationUnitBuilder.buildComment(FileComments.GENERATOR_COMMENT);
+        CompilationUnitBuilder compilationUnitBuilder = new CompilationUnitBuilder(testCU);
         TypeDeclaration typeDeclaration = JavaParserUtils.findTargetTypeDeclaration(sourceCU, javaFile);
+        TypeDeclaration testTypeDeclaration = JavaParserUtils.findTargetTypeDeclaration(testCU, testJavaFile);
         List<MethodDeclaration> methodDeclarations = MembersFilter.findMethodsFrom(typeDeclaration);
-        String className = typeDeclaration.getName();
-        ClassTypeBuilder classTypeBuilder = new ClassTypeBuilder(className + Consts.TEST_SUFFIX);
 
-        List<Comment> existComments = testCU.getComments();
-        compilationUnitBuilder.addComments(existComments);
-        PackageDeclaration existPackageDeclaration = testCU.getPackage();
-        compilationUnitBuilder.addPackage(existPackageDeclaration);
-        //process import
-        List<ImportDeclaration> existImports = testCU.getImports();
-        List<ImportDeclaration> sourceImports = sourceCU.getImports();
-        Set<ImportDeclaration> importSet = new HashSet<ImportDeclaration>();
-        importSet.addAll(new ArrayList<ImportDeclaration>(existImports));
-        importSet.addAll(new ArrayList<ImportDeclaration>(sourceImports));
-        List<ImportDeclaration> targetImports = new ArrayList<ImportDeclaration>();
-        for (ImportDeclaration impt : importSet) {
-            targetImports.add(impt);
-        }
-        compilationUnitBuilder.buildImports(targetImports);
+        ClassTypeBuilder classTypeBuilder = new ClassTypeBuilder((ClassOrInterfaceDeclaration) testTypeDeclaration);
+
         //process methods
         for (MethodDeclaration methodDeclaration : methodDeclarations) {
             String methodName = methodDeclaration.getName();
@@ -79,11 +61,9 @@ public class ExistTestReceiver extends AbstractReceiver {
 //                ImportDeclaration returnTypeImport = MethodUtils.findReferenceReturnTypeFrom(methodDeclaration,
 //                        sourceCU.getImports());
 //                compilationUnitBuilder.buildImports(Arrays.asList(returnTypeImport));
-            } else if (methodExist) {
-                classTypeBuilder.addMethod(testMethodDeclaration);
             }
         }
-        compilationUnitBuilder.buildClass(classTypeBuilder.build());
+//        compilationUnitBuilder.buildClass(classTypeBuilder.build());
         return compilationUnitBuilder;
     }
 }

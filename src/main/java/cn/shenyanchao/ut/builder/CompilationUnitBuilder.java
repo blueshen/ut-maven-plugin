@@ -20,7 +20,15 @@ import java.util.List;
  */
 public class CompilationUnitBuilder {
 
-    private CompilationUnit cu = new CompilationUnit();
+    private CompilationUnit cu;
+
+    public CompilationUnitBuilder() {
+        cu = new CompilationUnit();
+    }
+
+    public CompilationUnitBuilder(CompilationUnit cu) {
+        this.cu = cu;
+    }
 
     public CompilationUnitBuilder buildComment(String commentStr) {
         Comment comment = new JavadocComment(commentStr);
