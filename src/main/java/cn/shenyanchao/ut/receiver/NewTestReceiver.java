@@ -19,9 +19,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Date:  6/20/13
+ * Time:  7:14 PM
+ *
  * @author shenyanchao
- *         Date:  6/20/13
- *         Time:  7:14 PM
  */
 public class NewTestReceiver extends AbstractReceiver {
 
@@ -52,11 +53,13 @@ public class NewTestReceiver extends AbstractReceiver {
         compilationUnitBuilder.buildPackage(testPackageName);
         //process test import
         compilationUnitBuilder.buildTestNGImports();
+        compilationUnitBuilder.buildMockitoImports();
 
         compilationUnitBuilder.buildImports(sourceCU.getImports());
         ImportDeclaration pkgImport = new ImportDeclaration(new NameExpr(sourceCU.getPackage().getName().toString()),
                 false, true);
         compilationUnitBuilder.buildImports(Arrays.asList(pkgImport));
+        classTypeBuilder.buildMockitoSetUpMethod();
         //process methods
         for (MethodDeclaration methodDeclaration : methodDeclarations) {
             String methodName = methodDeclaration.getName();

@@ -3,8 +3,8 @@ package cn.shenyanchao.ut.utils.test;
 import cn.shenyanchao.ut.utils.JavaParserFactory;
 import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
-import japa.parser.ast.body.ModifierSet;
 import japa.parser.ast.body.TypeDeclaration;
+import org.testng.annotations.Test;
 
 import java.io.File;
 import java.lang.reflect.Modifier;
@@ -17,7 +17,27 @@ import java.util.List;
  * @author shenyanchao
  */
 public class JavaParserTest {
+//
+//
+//    @Mock
+//    private String x;
+//
+//    @Spy
+//    private String y;
+//
+//    @InjectMocks
+//    private JavaParserFactory javaParserFactory;
+//
+//    @BeforeClass
+//    public void initMock() {
+//        MockitoAnnotations.initMocks(this);
+//    }
+//
+//    public void mockTest() {
+//        assertTrue(true);
+//    }
 
+    @Test
     public static void main(String[] args) {
         CompilationUnit sourceCU = JavaParserFactory.getCompilationUnit(new File("/home/shenyanchao/IdeaProjects/" +
                 "ut-maven-plugin/src/main/java/cn/shenyanchao/ut/command/NewTestCommand.java"),
@@ -28,9 +48,9 @@ public class JavaParserTest {
         System.out.println(targetType.getName());
         System.out.println(targetType.getNameExpr().getName());
         if (targetType instanceof ClassOrInterfaceDeclaration) {
-           ClassOrInterfaceDeclaration classOrInterfaceDeclaration = ((ClassOrInterfaceDeclaration) targetType);
+            ClassOrInterfaceDeclaration classOrInterfaceDeclaration = ((ClassOrInterfaceDeclaration) targetType);
             boolean isInterface = classOrInterfaceDeclaration.isInterface();
-            System.out.println("Interface: "+isInterface);
+            System.out.println("Interface: " + isInterface);
         }
         int modifiers = targetType.getModifiers();
         System.out.println(Modifier.isInterface(modifiers));

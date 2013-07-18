@@ -10,13 +10,13 @@ import japa.parser.ast.body.JavadocComment;
 import japa.parser.ast.expr.NameExpr;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Date:  6/15/13
+ * Time:  3:29 PM
+ *
  * @author shenyanchao
- *         Date:  6/15/13
- *         Time:  3:29 PM
  */
 public class CompilationUnitBuilder {
 
@@ -40,34 +40,33 @@ public class CompilationUnitBuilder {
         return this;
     }
 
-    public CompilationUnitBuilder addComments(List<Comment> comments) {
-        cu.setComments(comments);
-        return this;
-    }
-
     public CompilationUnitBuilder buildPackage(String packageName) {
         cu.setPackage(new PackageDeclaration(ASTHelper.createNameExpr(packageName)));
         return this;
     }
 
-    public CompilationUnitBuilder addPackage(PackageDeclaration packageDeclaration) {
-        cu.setPackage(packageDeclaration);
-        return this;
-    }
 
     public CompilationUnitBuilder buildTestNGImports() {
-
-        ImportDeclaration importDeclaration = new ImportDeclaration(new NameExpr("org.testng.annotations.Test"),
-                false, false);
-        buildImports(Arrays.asList(importDeclaration));
+        List<ImportDeclaration> testngImports = new ArrayList<ImportDeclaration>();
+        testngImports.add(new ImportDeclaration(new NameExpr("org.testng.annotations"),
+                false, true));
+        testngImports.add(new ImportDeclaration(new NameExpr("org.testng.Assert"),
+                true, true));
+        buildImports(testngImports);
         return this;
     }
 
     public CompilationUnitBuilder buildMockitoImports() {
-
-        ImportDeclaration importDeclaration = new ImportDeclaration(new NameExpr("org.mockito"),
-                true, true);
-        buildImports(Arrays.asList(importDeclaration));
+        List<ImportDeclaration> mockitoImports = new ArrayList<ImportDeclaration>();
+        mockitoImports.add(new ImportDeclaration(new NameExpr("org.mockito.Mockito"),
+                true, true));
+        mockitoImports.add(new ImportDeclaration(new NameExpr("org.mockito.InjectMocks"),
+                false, false));
+        mockitoImports.add(new ImportDeclaration(new NameExpr("org.mockito.Mock"),
+                false, false));
+        mockitoImports.add(new ImportDeclaration(new NameExpr("org.mockito.MockitoAnnotations"),
+                false, false));
+        buildImports(mockitoImports);
         return this;
     }
 

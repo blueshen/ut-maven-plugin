@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 /**
- *
  * @author shenyanchao
  *         Date:  6/18/13
  *         Time:  1:16 PM

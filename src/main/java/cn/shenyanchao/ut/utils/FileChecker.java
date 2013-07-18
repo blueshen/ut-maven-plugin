@@ -17,7 +17,7 @@ import java.util.List;
 public class FileChecker {
 
     /**
-     * check whether the test class is exists
+     * check whether the test java file is exists
      * @param file
      * @return true or false;
      */

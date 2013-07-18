@@ -5,8 +5,11 @@ import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.JavadocComment;
 import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.body.ModifierSet;
-import japa.parser.ast.expr.*;
+import japa.parser.ast.expr.AnnotationExpr;
+import japa.parser.ast.expr.MarkerAnnotationExpr;
+import japa.parser.ast.expr.NameExpr;
 import japa.parser.ast.stmt.BlockStmt;
+import japa.parser.ast.stmt.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +23,11 @@ public class ClassTypeBuilder {
 
     private ClassOrInterfaceDeclaration type = null;
 
-    public ClassTypeBuilder(){
+    public ClassTypeBuilder() {
         type = new ClassOrInterfaceDeclaration();
     }
 
-    public ClassTypeBuilder(ClassOrInterfaceDeclaration classOrInterfaceDeclaration){
+    public ClassTypeBuilder(ClassOrInterfaceDeclaration classOrInterfaceDeclaration) {
         this.type = classOrInterfaceDeclaration;
     }
 
@@ -51,10 +54,28 @@ public class ClassTypeBuilder {
         if (null != method.getParameters()) {
 //            method.getParameters().clear();
         }
+        method.setComment(null);
         method.setAnnotations(annotationExprList);
         method.setType(ASTHelper.VOID_TYPE);
         method.setBody(new BlockStmt());
         return addMethod(method);
+    }
+
+    public ClassTypeBuilder buildMockitoSetUpMethod() {
+        MethodBuilder methodBuilder = new MethodBuilder();
+        methodBuilder.buildMethodModifier(ModifierSet.PUBLIC);
+        methodBuilder.buildMethodReturnType(ASTHelper.VOID_TYPE);
+        methodBuilder.buildMethodName("initMocks");
+        methodBuilder.buildMethodAnnotations("BeforeClass");
+
+        List<Statement> statements = new ArrayList<Statement>();
+//        MockitoAnnotations.initMocks(this);
+//        statements.add(new LabeledStmt());
+        methodBuilder.buildBody(new BlockStmt(statements));
+
+        MethodDeclaration mockitoSetUpMethod = methodBuilder.build();
+        addMethod(mockitoSetUpMethod);
+        return this;
     }
 
     public ClassTypeBuilder addMethod(MethodDeclaration method) {

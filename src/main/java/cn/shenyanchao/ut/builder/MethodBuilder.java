@@ -45,16 +45,11 @@ public class MethodBuilder {
         return this;
     }
 
-    public MethodBuilder buildMethodAnnotations(String methodName) {
-        MarkerAnnotationExpr markerAnnotationExpr = new MarkerAnnotationExpr(new NameExpr("Test"));
-//        List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-//        memberValuePairs.add(new MemberValuePair("description", new NameExpr("\"申艳超的测试用例\"")));
-//        NormalAnnotationExpr normalAnnotationExpr = new NormalAnnotationExpr(new NameExpr("Test"),null);
-//        annotationExprList.add(normalAnnotationExpr);
+    public MethodBuilder buildMethodAnnotations(String annotation) {
         List<AnnotationExpr> annotationExprList = new ArrayList<AnnotationExpr>();
+        MarkerAnnotationExpr markerAnnotationExpr = new MarkerAnnotationExpr(new NameExpr(annotation));
         annotationExprList.add(markerAnnotationExpr);
         method.setAnnotations(annotationExprList);
-
         return this;
     }
 

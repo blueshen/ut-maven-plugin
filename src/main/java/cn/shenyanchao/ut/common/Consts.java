@@ -1,9 +1,10 @@
 package cn.shenyanchao.ut.common;
 
 /**
+ * Date:  6/18/13
+ * Time:  1:21 PM
+ *
  * @author shenyanchao
- *         Date:  6/18/13
- *         Time:  1:21 PM
  */
 public interface Consts {
 

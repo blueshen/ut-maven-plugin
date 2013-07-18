@@ -58,12 +58,9 @@ public class ExistTestReceiver extends AbstractReceiver {
             boolean methodExist = (testMethodDeclaration == null ? false : true);
             if (!methodExist) {
                 classTypeBuilder.buildMethod(methodName + Consts.TEST_SUFFIX, methodDeclaration);
-//                ImportDeclaration returnTypeImport = MethodUtils.findReferenceReturnTypeFrom(methodDeclaration,
-//                        sourceCU.getImports());
-//                compilationUnitBuilder.buildImports(Arrays.asList(returnTypeImport));
+
             }
         }
-//        compilationUnitBuilder.buildClass(classTypeBuilder.build());
         return compilationUnitBuilder;
     }
 }

@@ -20,7 +20,6 @@ public class TypeUtils {
         if (null == fields || null == methods) {
             isJavaBean = false;
         } else {
-
             for (FieldDeclaration fieldDeclaration : fields) {
                 List<VariableDeclarator> variables = fieldDeclaration.getVariables();
                 for (VariableDeclarator variableDeclarator : variables) {
@@ -28,14 +27,13 @@ public class TypeUtils {
                     if (!isFieldHaveGetAndSetMethod(typeDeclaration, fieldName)) {
                         isJavaBean = false;
                     }
-
                 }
             }
         }
         return isJavaBean;
     }
 
-    private static String anaylzeFieldName(String fieldName) {
+    private static String analyzeFieldName(String fieldName) {
         if (fieldName.length() >= 2) {
             char firstChar = fieldName.charAt(0);
             char secondChar = fieldName.charAt(1);
@@ -55,7 +53,7 @@ public class TypeUtils {
         List<MethodDeclaration> methods = MembersFilter.findMethodsFrom(typeDeclaration);
         for (MethodDeclaration methodDeclaration : methods) {
             String methodName = methodDeclaration.getName();
-            fieldName = anaylzeFieldName(fieldName);
+            fieldName = analyzeFieldName(fieldName);
             if (("set" + fieldName).equals(methodName)) {
                 hasSetMethod = true;
             }
