@@ -4,9 +4,10 @@ import cn.shenyanchao.ut.builder.CompilationUnitBuilder;
 import cn.shenyanchao.ut.receiver.AbstractReceiver;
 
 /**
+ * Date:  6/20/13
+ * Time:  7:19 PM
+ *
  * @author shenyanchao
- *         Date:  6/20/13
- *         Time:  7:19 PM
  */
 public class ExistTestCommand extends AbstractCommand {
 

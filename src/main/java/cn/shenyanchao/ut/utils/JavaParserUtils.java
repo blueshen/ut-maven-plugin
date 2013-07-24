@@ -11,9 +11,10 @@ import java.io.File;
 import java.util.List;
 
 /**
+ * Date:  6/20/13
+ * Time:  8:15 PM
+ *
  * @author shenyanchao
- *         Date:  6/20/13
- *         Time:  8:15 PM
  */
 public class JavaParserUtils {
     private static final Logger LOG = LoggerFactory.getLogger(JavaParserUtils.class);

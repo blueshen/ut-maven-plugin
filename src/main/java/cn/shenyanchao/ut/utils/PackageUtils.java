@@ -7,14 +7,16 @@ import japa.parser.ast.expr.NameExpr;
 import java.io.File;
 
 /**
+ * Date:  6/18/13
+ * Time:  1:48 PM
+ *
  * @author shenyanchao
- *         Date:  6/18/13
- *         Time:  1:48 PM
  */
 public class PackageUtils {
 
     /**
      * find what is test package
+     *
      * @param packageDeclaration
      * @return
      */
@@ -30,6 +32,7 @@ public class PackageUtils {
 
     /**
      * find what is the test java file name
+     *
      * @param testDir
      * @param testPackageName
      * @param className

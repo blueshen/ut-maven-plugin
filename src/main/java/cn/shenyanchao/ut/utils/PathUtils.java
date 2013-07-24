@@ -3,9 +3,10 @@ package cn.shenyanchao.ut.utils;
 import java.io.File;
 
 /**
+ * Date:  6/17/13
+ * Time:  1:32 PM
+ *
  * @author shenyanchao
- *         Date:  6/17/13
- *         Time:  1:32 PM
  */
 public class PathUtils {
 

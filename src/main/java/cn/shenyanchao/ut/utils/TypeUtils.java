@@ -13,6 +13,11 @@ import java.util.List;
  */
 public class TypeUtils {
 
+    /**
+     * if class is POJO
+     * @param typeDeclaration
+     * @return true or false
+     */
     public static boolean isJavaBean(TypeDeclaration typeDeclaration) {
         boolean isJavaBean = true;
         List<FieldDeclaration> fields = MembersFilter.findFieldsFrom(typeDeclaration);
@@ -33,6 +38,11 @@ public class TypeUtils {
         return isJavaBean;
     }
 
+    /**
+     * getter or setter process
+     * @param fieldName
+     * @return methodName without get or set prefix
+     */
     private static String analyzeFieldName(String fieldName) {
         if (fieldName.length() >= 2) {
             char firstChar = fieldName.charAt(0);
@@ -46,6 +56,12 @@ public class TypeUtils {
         return StringUtils.capitalize(fieldName);
     }
 
+    /**
+     * is method have get and set method
+     * @param typeDeclaration
+     * @param fieldName
+     * @return true or false
+     */
     private static boolean isFieldHaveGetAndSetMethod(TypeDeclaration typeDeclaration, String fieldName) {
 
         boolean hasSetMethod = false;
@@ -64,16 +80,31 @@ public class TypeUtils {
         return hasGetMethod && hasSetMethod;
     }
 
+    /**
+     * is private class
+     * @param typeDeclaration
+     * @return true or false
+     */
     public static boolean isPrivate(TypeDeclaration typeDeclaration) {
         int modifiers = typeDeclaration.getModifiers();
         return ModifierSet.isPrivate(modifiers);
     }
 
+    /**
+     * is public class
+     * @param typeDeclaration
+     * @return true or false
+     */
     public static boolean isPublic(TypeDeclaration typeDeclaration) {
         int modifiers = typeDeclaration.getModifiers();
         return ModifierSet.isPublic(modifiers);
     }
 
+    /**
+     * is  abstract class
+     * @param typeDeclaration
+     * @return true or false
+     */
     public static boolean isAbstract(TypeDeclaration typeDeclaration) {
         int modifiers = typeDeclaration.getModifiers();
         return ModifierSet.isAbstract(modifiers);

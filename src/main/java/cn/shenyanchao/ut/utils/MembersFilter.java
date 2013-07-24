@@ -9,15 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Date:  6/18/13
+ * Time:  1:33 PM
+ *
  * @author shenyanchao
- *         Date:  6/18/13
- *         Time:  1:33 PM
  */
 public class MembersFilter {
 
 
     /**
      * find all methods in TypeDeclaration
+     *
      * @param typeDeclaration
      * @return methods
      */
@@ -34,6 +36,7 @@ public class MembersFilter {
 
     /**
      * find all fileds in TypeDeclaration
+     *
      * @param typeDeclaration
      * @return fields
      */

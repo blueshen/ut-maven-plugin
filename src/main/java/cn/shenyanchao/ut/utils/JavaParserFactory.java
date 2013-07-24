@@ -10,9 +10,10 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * Date:  6/15/13
+ * Time:  3:22 PM
+ *
  * @author shenyanchao
- *         Date:  6/15/13
- *         Time:  3:22 PM
  */
 public class JavaParserFactory {
 

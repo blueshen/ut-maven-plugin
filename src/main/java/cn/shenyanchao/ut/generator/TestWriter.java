@@ -9,9 +9,10 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 /**
+ * Date:  6/18/13
+ * Time:  1:16 PM
+ *
  * @author shenyanchao
- *         Date:  6/18/13
- *         Time:  1:16 PM
  */
 public class TestWriter {
 

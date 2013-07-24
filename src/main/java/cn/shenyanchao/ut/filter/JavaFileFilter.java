@@ -6,9 +6,10 @@ import org.apache.commons.io.filefilter.IOFileFilter;
 import java.io.File;
 
 /**
+ * Date:  6/15/13
+ * Time:  4:36 PM
+ *
  * @author shenyanchao
- *         Date:  6/15/13
- *         Time:  4:36 PM
  */
 public class JavaFileFilter implements IOFileFilter {
 

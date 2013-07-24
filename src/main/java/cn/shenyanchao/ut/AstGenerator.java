@@ -27,9 +27,10 @@ import java.io.File;
 import java.util.Iterator;
 
 /**
+ * Date:  6/13/13
+ * Time:  5:13 PM
+ *
  * @author shenyanchao
- *         Date:  6/13/13
- *         Time:  5:13 PM
  */
 @Mojo(name = "source2test", defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES)
 public class AstGenerator extends AbstractMojo {

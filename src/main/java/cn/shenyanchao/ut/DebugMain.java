@@ -1,11 +1,5 @@
 package cn.shenyanchao.ut;
 
-/**
- * Date:  13-7-10
- * Time:  下午1:06
- *
- * @author shenyanchao
- */
 
 import cn.shenyanchao.ut.builder.CompilationUnitBuilder;
 import cn.shenyanchao.ut.command.ExistTestCommand;
@@ -32,9 +26,10 @@ import java.io.File;
 import java.util.Iterator;
 
 /**
+ * Date:  13-7-10
+ * Time:  下午1:06
+ *
  * @author shenyanchao
- *         Date:  6/13/13
- *         Time:  5:13 PM
  */
 
 public class DebugMain {

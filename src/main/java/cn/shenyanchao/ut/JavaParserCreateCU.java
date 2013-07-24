@@ -17,10 +17,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Created with IntelliJ IDEA.
- *
- * @author shenyanchao
  * Date:  6/15/13
  * Time:  12:16 PM
+ *
+ * @author shenyanchao
  */
 public class JavaParserCreateCU {
 

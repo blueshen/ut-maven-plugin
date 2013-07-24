@@ -9,15 +9,16 @@ import java.io.File;
 import java.util.List;
 
 /**
- *
- * @author shenyanchao
  * Date:  6/18/13
  * Time:  3:25 PM
+ *
+ * @author shenyanchao
  */
 public class FileChecker {
 
     /**
      * check whether the test java file is exists
+     *
      * @param file
      * @return true or false;
      */
@@ -30,13 +31,14 @@ public class FileChecker {
 
     /**
      * check whether test method has exists
+     *
      * @param method
      * @return existMethod or null
      */
     public static MethodDeclaration isTestCaseExist(CompilationUnit testCU, MethodDeclaration method) {
         MethodDeclaration rtnMethodDeclaration = null;
-        if (null == testCU){
-            return  null;
+        if (null == testCU) {
+            return null;
         }
         List<TypeDeclaration> types = testCU.getTypes();
         for (TypeDeclaration type : types) {
