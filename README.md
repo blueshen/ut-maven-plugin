@@ -5,9 +5,10 @@
 
 Maven Plugin for Generate Unit Test Code Template
 
->This is not aim to solve the whole unit test,but simple generate the neccessary code.
+>This tool is not designed to solve the problem of the whole unit testing, but simply to generate the necessary test code, and  improve the efficiency of write unit tests.
 
 ###Usage:
+
     <plugin>
         <groupId>cn.shenyanchao.ut</groupId>
         <artifactId>ut-maven-plugin</artifactId>
@@ -22,3 +23,12 @@ Maven Plugin for Generate Unit Test Code Template
             </execution>
         </executions>
     </plugin>
+
+###Run from Source
+
+    mvn clean install
+
+
+###Debug from Source
+
+    mvn clean integration-test
