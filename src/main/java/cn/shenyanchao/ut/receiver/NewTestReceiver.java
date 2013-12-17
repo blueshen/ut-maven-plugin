@@ -63,6 +63,7 @@ public class NewTestReceiver extends AbstractReceiver {
         //process methods
         for (MethodDeclaration methodDeclaration : methodDeclarations) {
             String methodName = methodDeclaration.getName();
+            methodDeclaration.setThrows(null); //remove throws block
             classTypeBuilder.buildMethod(methodName + Consts.TEST_SUFFIX, methodDeclaration);
         }
         compilationUnitBuilder.buildClass(classTypeBuilder.build());

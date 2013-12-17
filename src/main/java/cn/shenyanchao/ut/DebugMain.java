@@ -14,7 +14,10 @@ import cn.shenyanchao.ut.utils.ClassTools;
 import cn.shenyanchao.ut.utils.FileChecker;
 import cn.shenyanchao.ut.utils.JavaParserFactory;
 import cn.shenyanchao.ut.utils.JavaParserUtils;
+import cn.shenyanchao.ut.visitor.TestCodeVisitor;
 import japa.parser.ast.CompilationUnit;
+import japa.parser.ast.visitor.CloneVisitor;
+import japa.parser.ast.visitor.DumpVisitor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -39,7 +42,7 @@ public class DebugMain {
     private String sourceEncode = Consts.DEFAULT_ENCODE;
 
 
-    private String sourceDir = "/home/shenyanchao/IdeaProjects/ut-maven-plugin/src/it/spring-petclinic/src/main/java";
+    private static String sourceDir = "/home/shenyanchao/IdeaProjects/ut-maven-plugin/src/it/spring-petclinic/src/main/java";
 
     private String testDir = "/home/shenyanchao/IdeaProjects/ut-maven-plugin/src/it/spring-petclinic/src/test/java";
 
@@ -113,13 +116,35 @@ public class DebugMain {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main1(String[] args) {
         try {
             new DebugMain().execute();
         } catch (MojoExecutionException mojoException) {
             //ignore
         } catch (MojoFailureException mojoFailException) {
             //ignore
+        }
+    }
+
+    /**
+     * visitor test
+     * @param args
+     */
+
+    public static void main(String[] args) {
+
+        File sourceDirectory = new File(sourceDir);
+        Iterator<File> fileItr = FileUtils.iterateFiles(sourceDirectory, new JavaFileFilter(), TrueFileFilter.INSTANCE);
+        while (fileItr.hasNext()) {
+            File javaFile = fileItr.next();
+            System.out.println(javaFile.getAbsolutePath());
+            CompilationUnit cu = JavaParserFactory.getCompilationUnit(javaFile,"UTF-8");
+//             DumpVisitor visitor = new DumpVisitor();
+            CloneVisitor cloneVisitor = new CloneVisitor();
+            TestCodeVisitor testCodeVisitor = new TestCodeVisitor();
+
+            System.out.println(testCodeVisitor.visit(cu, null).toString());
+//            break;
         }
     }
 }

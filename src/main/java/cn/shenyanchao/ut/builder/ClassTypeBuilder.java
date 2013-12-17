@@ -57,7 +57,9 @@ public class ClassTypeBuilder {
         method.setComment(null);
         method.setAnnotations(annotationExprList);
         method.setType(ASTHelper.VOID_TYPE);
-        method.setBody(new BlockStmt());
+        BlockStmtBuilder blockStmtBuilder = new BlockStmtBuilder();
+        blockStmtBuilder.buildAssert();
+        method.setBody(blockStmtBuilder.build());
         return addMethod(method);
     }
 
