@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd-cpd>
+<duplication lines="65" tokens="351">
+<file line="49" path="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/AstGenerator.java"/>
+<file line="55" path="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/DebugMain.java"/>
+<codefragment>
+<![CDATA[
+    public void execute() throws MojoExecutionException, MojoFailureException {
+
+        getLog().info(sourceDir);
+        getLog().info(testDir);
+
+        File sourceDirectory = new File(sourceDir);
+        makeDirIfNotExist(sourceDirectory);
+        File testDirectory = new File(testDir);
+        makeDirIfNotExist(testDirectory);
+
+        Iterator<File> fileItr = FileUtils.iterateFiles(sourceDirectory, new JavaFileFilter(), TrueFileFilter.INSTANCE);
+        while (fileItr.hasNext()) {
+            File javaFile = fileItr.next();
+            getLog().info("start process file:" + javaFile.getAbsolutePath());
+            //process java file
+            if (ClassTools.isNeedTest(javaFile, sourceEncode)) {
+                convertJavaFile2Test(javaFile);
+            }
+        }
+    }
+
+    /**
+     * if dir not exist,create it
+     *
+     * @param dir
+     */
+    private void makeDirIfNotExist(File dir) {
+        if (!dir.isDirectory()) {
+            getLog().error(dir.getAbsolutePath() + "is not a directory!");
+        }
+        if (!dir.exists()) {
+            boolean success = false;
+            while (!success) {
+                success = dir.mkdirs();
+            }
+        }
+    }
+
+
+    /**
+     * @param javaFile
+     */
+    private void convertJavaFile2Test(File javaFile) {
+
+        CompilationUnit sourceCU = JavaParserFactory.getCompilationUnit(javaFile, sourceEncode);
+
+        CompilationUnitBuilder compilationUnitBuilder = null;
+        String testJavaFileName = JavaParserUtils.findTestJavaFileName(sourceCU, javaFile, testDir);
+        boolean testExist = FileChecker.isTestJavaClassExist(new File(testJavaFileName));
+        if (!testExist) {
+            CommandInvoker invoker = new CommandInvoker(new NewTestCommand(new NewTestReceiver(sourceCU, javaFile)));
+            compilationUnitBuilder = invoker.action();
+        } else if (testExist) {
+            CompilationUnit testCU = JavaParserFactory.getCompilationUnit(new File(testJavaFileName), sourceEncode);
+            CommandInvoker invoker = new CommandInvoker(new ExistTestCommand(new ExistTestReceiver(sourceCU, javaFile,
+                    testCU, new File(testJavaFileName))));
+            compilationUnitBuilder = invoker.action();
+        }
+
+        if (null != compilationUnitBuilder) {
+            CompilationUnit testCU = compilationUnitBuilder.build();
+            //写入测试代码文件
+            TestWriter.writeJavaTest(testJavaFileName, testCU.toString(), sourceEncode);
+        }
+    }
+]]>
+</codefragment>
+</duplication>
+<duplication lines="12" tokens="114">
+<file line="43" path="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/JavaParserCreateCU.java"/>
+<file line="197" path="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/visitor/TestCodeVisitor.java"/>
+<codefragment>
+<![CDATA[
+        MethodDeclaration mockMethod = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.VOID_TYPE, "initMocks");
+        List<AnnotationExpr> annotationExprs = new ArrayList<AnnotationExpr>();
+        MarkerAnnotationExpr markerAnnotationExpr
+                = new MarkerAnnotationExpr(new NameExpr(BeforeClass.class.getSimpleName()));
+        annotationExprs.add(markerAnnotationExpr);
+        mockMethod.setAnnotations(annotationExprs);
+        NameExpr nameExpr = new NameExpr(MockitoAnnotations.class.getSimpleName());
+        MethodCallExpr methodCallExpr = new MethodCallExpr(nameExpr, "initMocks");
+        ASTHelper.addArgument(methodCallExpr, new ThisExpr());
+        BlockStmt mockStmt = new BlockStmt();
+        mockMethod.setBody(mockStmt);
+        ASTHelper.addStmt(mockStmt,methodCallExpr);
+]]>
+</codefragment>
+</duplication>
+</pmd-cpd>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="4.3" timestamp="2013-12-23T20:51:30.473">
+<file name="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/DebugMain.java">
+<violation beginline="41" endline="41" begincolumn="20" endcolumn="24" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="cn.shenyanchao.ut" class="DebugMain" variable="fFlag" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'fFlag'.
+</violation>
+<violation beginline="124" endline="126" begincolumn="11" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="cn.shenyanchao.ut" class="DebugMain" method="main1" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+<violation beginline="126" endline="128" begincolumn="11" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="cn.shenyanchao.ut" class="DebugMain" method="main1" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+<violation beginline="146" endline="146" begincolumn="26" endcolumn="37" rule="UnusedLocalVariable" ruleset="Unused Code Rules" package="cn.shenyanchao.ut" class="DebugMain" method="main" variable="cloneVisitor" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedLocalVariable" priority="3">
+Avoid unused local variables such as 'cloneVisitor'.
+</violation>
+</file>
+<file name="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/builder/ClassTypeBuilder.java">
+<violation beginline="54" endline="56" begincolumn="45" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="cn.shenyanchao.ut.builder" class="ClassTypeBuilder" method="buildMethod" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+Avoid empty if statements
+</violation>
+</file>
+<file name="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/builder/MethodBuilder.java">
+<violation beginline="24" endline="24" begincolumn="33" endcolumn="35" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="cn.shenyanchao.ut.builder" class="MethodBuilder" variable="LOG" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'LOG'.
+</violation>
+</file>
+<file name="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/receiver/ExistTestReceiver.java">
+<violation beginline="27" endline="27" begincolumn="33" endcolumn="35" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="cn.shenyanchao.ut.receiver" class="ExistTestReceiver" variable="LOG" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'LOG'.
+</violation>
+</file>
+<file name="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/receiver/NewTestReceiver.java">
+<violation beginline="29" endline="29" begincolumn="33" endcolumn="35" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="cn.shenyanchao.ut.receiver" class="NewTestReceiver" variable="LOG" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'LOG'.
+</violation>
+</file>
+<file name="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/utils/ClassTools.java">
+<violation beginline="20" endline="20" begincolumn="33" endcolumn="35" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="cn.shenyanchao.ut.utils" class="ClassTools" variable="LOG" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'LOG'.
+</violation>
+<violation beginline="46" endline="49" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="cn.shenyanchao.ut.utils" class="ClassTools" method="isNeedTest" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+</file>
+<file name="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/visitor/TestCodeVisitor.java">
+<violation beginline="977" endline="977" begincolumn="25" endcolumn="29" rule="UnusedLocalVariable" ruleset="Unused Code Rules" package="cn.shenyanchao.ut.visitor" class="TestCodeVisitor" method="visit" variable="stmts" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedLocalVariable" priority="3">
+Avoid unused local variables such as 'stmts'.
+</violation>
+</file>
+</pmd>
