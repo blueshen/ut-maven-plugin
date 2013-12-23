@@ -61,7 +61,7 @@
         <!-- Metrics checks - http://checkstyle.sourceforge.net/config_metrics.html -->
         <module name="JavaNCSS">
             <property name="methodMaximum" value="70"/>
-            <property name="classMaximum" value="500"/>
+            <property name="classMaximum" value="2500"/>
         </module>
         <module name="CyclomaticComplexity">
             <property name="max" value="15"/>

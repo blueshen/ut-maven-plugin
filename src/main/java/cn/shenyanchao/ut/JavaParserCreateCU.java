@@ -7,13 +7,15 @@ import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.body.ModifierSet;
 import japa.parser.ast.body.Parameter;
-import japa.parser.ast.expr.FieldAccessExpr;
-import japa.parser.ast.expr.MethodCallExpr;
-import japa.parser.ast.expr.NameExpr;
-import japa.parser.ast.expr.StringLiteralExpr;
+import japa.parser.ast.expr.*;
 import japa.parser.ast.stmt.BlockStmt;
+import org.junit.BeforeClass;
+import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,6 +40,19 @@ public class JavaParserCreateCU {
         method.setModifiers(ModifierSet.addModifier(method.getModifiers(), ModifierSet.STATIC));
         ASTHelper.addMember(type, method);
 
+        MethodDeclaration mockMethod = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.VOID_TYPE, "initMocks");
+        List<AnnotationExpr> annotationExprs = new ArrayList<AnnotationExpr>();
+        MarkerAnnotationExpr markerAnnotationExpr
+                = new MarkerAnnotationExpr(new NameExpr(BeforeClass.class.getSimpleName()));
+        annotationExprs.add(markerAnnotationExpr);
+        mockMethod.setAnnotations(annotationExprs);
+        NameExpr nameExpr = new NameExpr(MockitoAnnotations.class.getSimpleName());
+        MethodCallExpr methodCallExpr = new MethodCallExpr(nameExpr, "initMocks");
+        ASTHelper.addArgument(methodCallExpr, new ThisExpr());
+        BlockStmt mockStmt = new BlockStmt();
+        mockMethod.setBody(mockStmt);
+        ASTHelper.addStmt(mockStmt,methodCallExpr);
+        ASTHelper.addMember(type, mockMethod);
         //add a parameter to the method
         Parameter param = ASTHelper.createParameter(ASTHelper.createReferenceType("String", 1), "args");
 //        param.setVarArgs(true);

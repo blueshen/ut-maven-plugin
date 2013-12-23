@@ -7,12 +7,14 @@ import japa.parser.ast.expr.*;
 import japa.parser.ast.stmt.*;
 import japa.parser.ast.type.*;
 import japa.parser.ast.visitor.GenericVisitor;
+import org.apache.commons.lang.StringUtils;
+import org.junit.BeforeClass;
+import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -63,13 +65,15 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
      * @return
      */
     public List<ImportDeclaration> visitImports(List<ImportDeclaration> _nodes, Object _arg) {
-        if (_nodes == null)
+        if (_nodes == null) {
             return null;
+        }
         List<ImportDeclaration> r = new ArrayList<ImportDeclaration>(_nodes.size());
         for (ImportDeclaration n : _nodes) {
             ImportDeclaration rN = cloneNodes(n, _arg);
-            if (rN != null)
+            if (rN != null) {
                 r.add(rN);
+            }
         }
         List<ImportDeclaration> testngImports = new ArrayList<ImportDeclaration>();
         testngImports.add(new ImportDeclaration(new NameExpr("org.testng.annotations"),
@@ -91,8 +95,9 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
     }
 
     public List<TypeDeclaration> visitTypes(List<TypeDeclaration> _nodes, Object _arg) {
-        if (_nodes == null)
+        if (_nodes == null) {
             return null;
+        }
         List<TypeDeclaration> r = new ArrayList<TypeDeclaration>(_nodes.size());
         for (TypeDeclaration n : _nodes) {
             if (n instanceof ClassOrInterfaceDeclaration && !((ClassOrInterfaceDeclaration) n).isInterface()) {
@@ -109,7 +114,7 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
     public List<BodyDeclaration> visitMembers(List<BodyDeclaration> _nodes, Object _arg) {
         List<BodyDeclaration> members = new ArrayList<BodyDeclaration>();
         for (BodyDeclaration member : _nodes) {
-            if (member instanceof MethodDeclaration ) {
+            if (member instanceof MethodDeclaration) {
                 member = (MethodDeclaration) visit((MethodDeclaration) member, _arg);
             } else if (member instanceof FieldDeclaration) {
                 member = (FieldDeclaration) visit((FieldDeclaration) member, _arg);
@@ -151,12 +156,14 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
 
     @Override
     public Node visit(LineComment _n, Object _arg) {
-        return new LineComment(_n.getBeginLine(), _n.getBeginColumn(), _n.getEndLine(), _n.getEndColumn(), _n.getContent());
+        return new LineComment(_n.getBeginLine(), _n.getBeginColumn(), _n.getEndLine(),
+                _n.getEndColumn(), _n.getContent());
     }
 
     @Override
     public Node visit(BlockComment _n, Object _arg) {
-        return new BlockComment(_n.getBeginLine(), _n.getBeginColumn(), _n.getEndLine(), _n.getEndColumn(), _n.getContent());
+        return new BlockComment(_n.getBeginLine(), _n.getBeginColumn(), _n.getEndLine(),
+                _n.getEndColumn(), _n.getContent());
     }
 
     /**
@@ -169,11 +176,42 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
     @Override
     public Node visit(ClassOrInterfaceDeclaration _n, Object _arg) {
         JavadocComment javaDoc = cloneNodes(_n.getJavaDoc(), _arg);
-        List<AnnotationExpr> annotations = visit(_n.getAnnotations(), _arg);
+        List<AnnotationExpr> annotations = null;
         List<TypeParameter> typeParameters = visit(_n.getTypeParameters(), _arg);
         List<ClassOrInterfaceType> extendsList = null;
         List<ClassOrInterfaceType> implementsList = null;
-        List<BodyDeclaration> members = visit(_n.getMembers(), _arg);
+
+        FieldDeclaration targetDeclaration = null;
+        MethodDeclaration mockMethod = null;
+        if (!_n.isInterface()) {
+            String clazzName = _n.getName();
+            String varName = StringUtils.lowerCase(clazzName.charAt(0) + "") + clazzName.substring(1);
+            targetDeclaration = ASTHelper.createFieldDeclaration(ModifierSet.PRIVATE,
+                    new ClassOrInterfaceType(clazzName), varName);
+            List<AnnotationExpr> injectMockAnnos = new ArrayList<AnnotationExpr>();
+            MarkerAnnotationExpr annotationExpr
+                    = new MarkerAnnotationExpr(new NameExpr(InjectMocks.class.getSimpleName()));
+            injectMockAnnos.add(annotationExpr);
+            targetDeclaration.setAnnotations(injectMockAnnos);
+            //-------------------------------
+            mockMethod = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.VOID_TYPE, "initMocks");
+            List<AnnotationExpr> annotationExprs = new ArrayList<AnnotationExpr>();
+            MarkerAnnotationExpr markerAnnotationExpr
+                    = new MarkerAnnotationExpr(new NameExpr(BeforeClass.class.getSimpleName()));
+            annotationExprs.add(markerAnnotationExpr);
+            mockMethod.setAnnotations(annotationExprs);
+            NameExpr nameExpr = new NameExpr(MockitoAnnotations.class.getSimpleName());
+            MethodCallExpr methodCallExpr = new MethodCallExpr(nameExpr, "initMocks");
+            ASTHelper.addArgument(methodCallExpr, new ThisExpr());
+            BlockStmt mockStmt = new BlockStmt();
+            mockMethod.setBody(mockStmt);
+            ASTHelper.addStmt(mockStmt, methodCallExpr);
+        }
+//        new FieldDeclaration(1.new ClassOrInterfaceType(),new VariableDeclarationExpr());
+        List<BodyDeclaration> members = new ArrayList<BodyDeclaration>();
+        members.add(targetDeclaration);
+        members.add(mockMethod);
+        members.addAll(visit(_n.getMembers(), _arg));
         Comment comment = cloneNodes(_n.getComment(), _arg);
 
         ClassOrInterfaceDeclaration r = new ClassOrInterfaceDeclaration(javaDoc, _n.getModifiers(),
@@ -339,7 +377,7 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
         Type type_ = new VoidType();
         List<Parameter> parameters = null;
         List<NameExpr> throws_ = null;
-        BlockStmt block = (BlockStmt)visit(_n.getBody(),_arg);
+        BlockStmt block = (BlockStmt) visit(_n.getBody(), _arg);
         Comment comment = cloneNodes(_n.getComment(), _arg);
 
         MethodDeclaration r = new MethodDeclaration(
@@ -490,8 +528,9 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
                 type_, dimensions, _n.getArrayCount()
         );
         r.setComment(comment);
-        if (_n.getInitializer() != null) // ArrayCreationExpr has two mutually exclusive constructors
+        if (_n.getInitializer() != null) {// ArrayCreationExpr has two mutually exclusive constructors
             r.setInitializer(cloneNodes(_n.getInitializer(), _arg));
+        }
         return r;
     }
 
@@ -657,7 +696,8 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
     public Node visit(IntegerLiteralMinValueExpr _n, Object _arg) {
         Comment comment = cloneNodes(_n.getComment(), _arg);
 
-        IntegerLiteralMinValueExpr r = new IntegerLiteralMinValueExpr(_n.getBeginLine(), _n.getBeginColumn(), _n.getEndLine(), _n.getEndColumn());
+        IntegerLiteralMinValueExpr r = new IntegerLiteralMinValueExpr(_n.getBeginLine(),
+                _n.getBeginColumn(), _n.getEndLine(), _n.getEndColumn());
         r.setComment(comment);
         return r;
     }
@@ -666,7 +706,8 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
     public Node visit(LongLiteralMinValueExpr _n, Object _arg) {
         Comment comment = cloneNodes(_n.getComment(), _arg);
 
-        LongLiteralMinValueExpr r = new LongLiteralMinValueExpr(_n.getBeginLine(), _n.getBeginColumn(), _n.getEndLine(), _n.getEndColumn());
+        LongLiteralMinValueExpr r = new LongLiteralMinValueExpr(_n.getBeginLine(),
+                _n.getBeginColumn(), _n.getEndLine(), _n.getEndColumn());
         r.setComment(comment);
         return r;
     }
@@ -711,7 +752,8 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
     public Node visit(NullLiteralExpr _n, Object _arg) {
         Comment comment = cloneNodes(_n.getComment(), _arg);
 
-        NullLiteralExpr r = new NullLiteralExpr(_n.getBeginLine(), _n.getBeginColumn(), _n.getEndLine(), _n.getEndColumn());
+        NullLiteralExpr r = new NullLiteralExpr(_n.getBeginLine(), _n.getBeginColumn(),
+                _n.getEndLine(), _n.getEndColumn());
         r.setComment(comment);
         return r;
     }
@@ -925,6 +967,7 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
 
     /**
      * 处理代码块
+     *
      * @param _n
      * @param _arg
      * @return
@@ -1175,23 +1218,27 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
     }
 
     public <T extends Node> List<T> visit(List<T> _nodes, Object _arg) {
-        if (_nodes == null)
+        if (_nodes == null) {
             return null;
+        }
         List<T> r = new ArrayList<T>(_nodes.size());
         for (T n : _nodes) {
             T rN = cloneNodes(n, _arg);
-            if (rN != null)
+            if (rN != null) {
                 r.add(rN);
+            }
         }
         return r;
     }
 
     protected <T extends Node> T cloneNodes(T _node, Object _arg) {
-        if (_node == null)
+        if (_node == null) {
             return null;
+        }
         Node r = _node.accept(this, _arg);
-        if (r == null)
+        if (r == null) {
             return null;
+        }
         return (T) r;
     }
 }

@@ -11,7 +11,7 @@
     <version>0.2.10-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
     <name>ut-maven-plugin</name>
-    <description>Maven Plugin for Generate Unit Test Code </description>
+    <description>Maven Plugin for Generate Unit Test Code Template</description>
     <url>http://www.shenyanchao.cn</url>
     <developers>
         <developer>

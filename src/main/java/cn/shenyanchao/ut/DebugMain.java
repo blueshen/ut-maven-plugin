@@ -17,7 +17,6 @@ import cn.shenyanchao.ut.utils.JavaParserUtils;
 import cn.shenyanchao.ut.visitor.TestCodeVisitor;
 import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.visitor.CloneVisitor;
-import japa.parser.ast.visitor.DumpVisitor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -37,12 +36,15 @@ import java.util.Iterator;
 
 public class DebugMain {
 
+    private static final Logger LOG = LoggerFactory.getLogger(DebugMain.class);
+
     private String fFlag;
 
     private String sourceEncode = Consts.DEFAULT_ENCODE;
 
 
-    private static String sourceDir = "/home/shenyanchao/IdeaProjects/ut-maven-plugin/src/it/spring-petclinic/src/main/java";
+    private static String sourceDir
+            = "/home/shenyanchao/IdeaProjects/ut-maven-plugin/src/it/spring-petclinic/src/main/java";
 
     private String testDir = "/home/shenyanchao/IdeaProjects/ut-maven-plugin/src/it/spring-petclinic/src/test/java";
 
@@ -128,6 +130,7 @@ public class DebugMain {
 
     /**
      * visitor test
+     *
      * @param args
      */
 
@@ -137,13 +140,13 @@ public class DebugMain {
         Iterator<File> fileItr = FileUtils.iterateFiles(sourceDirectory, new JavaFileFilter(), TrueFileFilter.INSTANCE);
         while (fileItr.hasNext()) {
             File javaFile = fileItr.next();
-            System.out.println(javaFile.getAbsolutePath());
-            CompilationUnit cu = JavaParserFactory.getCompilationUnit(javaFile,"UTF-8");
+            LOG.info(javaFile.getAbsolutePath());
+            CompilationUnit cu = JavaParserFactory.getCompilationUnit(javaFile, "UTF-8");
 //             DumpVisitor visitor = new DumpVisitor();
             CloneVisitor cloneVisitor = new CloneVisitor();
             TestCodeVisitor testCodeVisitor = new TestCodeVisitor();
 
-            System.out.println(testCodeVisitor.visit(cu, null).toString());
+            LOG.info(testCodeVisitor.visit(cu, null).toString());
 //            break;
         }
     }
