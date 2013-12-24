@@ -974,10 +974,8 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
      */
     @Override
     public Node visit(BlockStmt _n, Object _arg) {
-        List<Statement> stmts = new ArrayList<Statement>();
         NameExpr clazz = new NameExpr(Assert.class.getSimpleName());
         MethodCallExpr call = new MethodCallExpr(clazz, "assertTrue");
-//        call.setArgs(Arrays.<Expression>asList(new BooleanLiteralExpr(false)));
         ASTHelper.addArgument(call, (new BooleanLiteralExpr(false)));
         BlockStmt r = new BlockStmt();
         ASTHelper.addStmt(r, call);

@@ -142,7 +142,7 @@ public class DebugMain {
             File javaFile = fileItr.next();
             LOG.info(javaFile.getAbsolutePath());
             CompilationUnit cu = JavaParserFactory.getCompilationUnit(javaFile, "UTF-8");
-            CloneVisitor cloneVisitor = new CloneVisitor();
+//            CloneVisitor cloneVisitor = new CloneVisitor();
             TestCodeVisitor testCodeVisitor = new TestCodeVisitor();
             LOG.info(testCodeVisitor.visit(cu, null).toString());
         }
