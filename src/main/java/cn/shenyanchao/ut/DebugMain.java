@@ -16,7 +16,6 @@ import cn.shenyanchao.ut.utils.JavaParserFactory;
 import cn.shenyanchao.ut.utils.JavaParserUtils;
 import cn.shenyanchao.ut.visitor.TestCodeVisitor;
 import japa.parser.ast.CompilationUnit;
-import japa.parser.ast.visitor.CloneVisitor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.maven.plugin.MojoExecutionException;
