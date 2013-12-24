@@ -207,7 +207,6 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
             mockMethod.setBody(mockStmt);
             ASTHelper.addStmt(mockStmt, methodCallExpr);
         }
-//        new FieldDeclaration(1.new ClassOrInterfaceType(),new VariableDeclarationExpr());
         List<BodyDeclaration> members = new ArrayList<BodyDeclaration>();
         members.add(targetDeclaration);
         members.add(mockMethod);

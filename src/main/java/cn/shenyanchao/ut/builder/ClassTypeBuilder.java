@@ -45,10 +45,6 @@ public class ClassTypeBuilder {
 
         method.setName(methodName);
         MarkerAnnotationExpr markerAnnotationExpr = new MarkerAnnotationExpr(new NameExpr("Test"));
-//        List<MemberValuePair> memberValuePairs = new ArrayList<MemberValuePair>();
-//        memberValuePairs.add(new MemberValuePair("description", new NameExpr("\"申艳超的测试用例\"")));
-//        NormalAnnotationExpr normalAnnotationExpr = new NormalAnnotationExpr(new NameExpr("Test"),null);
-//        annotationExprList.add(normalAnnotationExpr);
         List<AnnotationExpr> annotationExprList = new ArrayList<AnnotationExpr>();
         annotationExprList.add(markerAnnotationExpr);
         if (null != method.getParameters()) {
@@ -58,7 +54,7 @@ public class ClassTypeBuilder {
         method.setAnnotations(annotationExprList);
         method.setType(ASTHelper.VOID_TYPE);
         BlockStmtBuilder blockStmtBuilder = new BlockStmtBuilder();
-        blockStmtBuilder.buildAssert();
+        blockStmtBuilder.buildAssertStmt();
         method.setBody(blockStmtBuilder.build());
         return addMethod(method);
     }

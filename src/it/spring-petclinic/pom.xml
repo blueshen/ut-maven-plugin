@@ -349,7 +349,7 @@
                 <executions>
                     <execution>
                         <id>source2test</id>
-                        <phase>process-test-sources</phase>
+                        <phase>generate-sources</phase>
                         <goals>
                             <goal>source2test</goal>
                         </goals>

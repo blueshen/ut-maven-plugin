@@ -51,7 +51,7 @@ public class CompilationUnitBuilder {
         testngImports.add(new ImportDeclaration(new NameExpr("org.testng.annotations"),
                 false, true));
         testngImports.add(new ImportDeclaration(new NameExpr("org.testng.Assert"),
-                true, true));
+                false, false));
         buildImports(testngImports);
         return this;
     }

@@ -1,10 +1,12 @@
 package cn.shenyanchao.ut.builder;
 
-import japa.parser.ast.expr.Expression;
-import japa.parser.ast.expr.StringLiteralExpr;
-import japa.parser.ast.stmt.AssertStmt;
+import japa.parser.ASTHelper;
+import japa.parser.ast.expr.BooleanLiteralExpr;
+import japa.parser.ast.expr.MethodCallExpr;
+import japa.parser.ast.expr.NameExpr;
 import japa.parser.ast.stmt.BlockStmt;
 import japa.parser.ast.stmt.Statement;
+import org.testng.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +21,14 @@ public class BlockStmtBuilder {
 
     private BlockStmt blockStmt = new BlockStmt();
 
-    public void buildAssert() {
-        AssertStmt assertStmt = new AssertStmt();
-        Expression expression = new StringLiteralExpr("Assert.assertTrue(false)");
-        assertStmt.setCheck(expression);
+    public void buildAssertStmt() {
+        NameExpr clazz = new NameExpr(Assert.class.getSimpleName());
+        MethodCallExpr call = new MethodCallExpr(clazz, "assertTrue");
+        ASTHelper.addArgument(call, (new BooleanLiteralExpr(false)));
+        BlockStmt r = new BlockStmt();
+        ASTHelper.addStmt(r, call);
         List<Statement> stmts = new ArrayList<Statement>();
-        stmts.add(assertStmt);
+        stmts.add(r);
         blockStmt.setStmts(stmts);
     }
 
