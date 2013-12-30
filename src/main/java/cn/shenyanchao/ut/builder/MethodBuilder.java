@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class MethodBuilder {
 
+
     private static final Logger LOG = LoggerFactory.getLogger(MethodBuilder.class);
 
     private MethodDeclaration method = new MethodDeclaration();
@@ -47,6 +48,9 @@ public class MethodBuilder {
 
     public MethodBuilder buildMethodAnnotations(String annotation) {
         List<AnnotationExpr> annotationExprList = new ArrayList<AnnotationExpr>();
+        if (null != method.getAnnotations()){
+        annotationExprList.addAll(method.getAnnotations());
+        }
         MarkerAnnotationExpr markerAnnotationExpr = new MarkerAnnotationExpr(new NameExpr(annotation));
         annotationExprList.add(markerAnnotationExpr);
         method.setAnnotations(annotationExprList);

@@ -7,7 +7,6 @@ import japa.parser.ast.ImportDeclaration;
 import japa.parser.ast.PackageDeclaration;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.JavadocComment;
-import japa.parser.ast.expr.NameExpr;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,31 +41,6 @@ public class CompilationUnitBuilder {
 
     public CompilationUnitBuilder buildPackage(String packageName) {
         cu.setPackage(new PackageDeclaration(ASTHelper.createNameExpr(packageName)));
-        return this;
-    }
-
-
-    public CompilationUnitBuilder buildTestNGImports() {
-        List<ImportDeclaration> testngImports = new ArrayList<ImportDeclaration>();
-        testngImports.add(new ImportDeclaration(new NameExpr("org.testng.annotations"),
-                false, true));
-        testngImports.add(new ImportDeclaration(new NameExpr("org.testng.Assert"),
-                false, false));
-        buildImports(testngImports);
-        return this;
-    }
-
-    public CompilationUnitBuilder buildMockitoImports() {
-        List<ImportDeclaration> mockitoImports = new ArrayList<ImportDeclaration>();
-        mockitoImports.add(new ImportDeclaration(new NameExpr("org.mockito.Mockito"),
-                true, true));
-        mockitoImports.add(new ImportDeclaration(new NameExpr("org.mockito.InjectMocks"),
-                false, false));
-        mockitoImports.add(new ImportDeclaration(new NameExpr("org.mockito.Mock"),
-                false, false));
-        mockitoImports.add(new ImportDeclaration(new NameExpr("org.mockito.MockitoAnnotations"),
-                false, false));
-        buildImports(mockitoImports);
         return this;
     }
 

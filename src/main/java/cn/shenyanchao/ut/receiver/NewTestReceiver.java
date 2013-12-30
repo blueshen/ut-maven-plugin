@@ -2,6 +2,7 @@ package cn.shenyanchao.ut.receiver;
 
 import cn.shenyanchao.ut.builder.ClassTypeBuilder;
 import cn.shenyanchao.ut.builder.CompilationUnitBuilder;
+import cn.shenyanchao.ut.builder.ImportsBuilder;
 import cn.shenyanchao.ut.common.Consts;
 import cn.shenyanchao.ut.common.FileComments;
 import cn.shenyanchao.ut.utils.JavaParserUtils;
@@ -52,8 +53,9 @@ public class NewTestReceiver extends AbstractReceiver {
         compilationUnitBuilder.buildComment(FileComments.GENERATOR_COMMENT);
         compilationUnitBuilder.buildPackage(testPackageName);
         //process test import
-        compilationUnitBuilder.buildTestNGImports();
-        compilationUnitBuilder.buildMockitoImports();
+        ImportsBuilder importsBuilder = new ImportsBuilder();
+        importsBuilder.buildMockitoImports().buildTestNGImports();
+        compilationUnitBuilder.buildImports(importsBuilder.build());
 
         compilationUnitBuilder.buildImports(sourceCU.getImports());
         ImportDeclaration pkgImport = new ImportDeclaration(new NameExpr(sourceCU.getPackage().getName().toString()),

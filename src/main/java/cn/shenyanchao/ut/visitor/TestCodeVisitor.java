@@ -1,5 +1,9 @@
 package cn.shenyanchao.ut.visitor;
 
+import cn.shenyanchao.ut.builder.BlockStmtBuilder;
+import cn.shenyanchao.ut.builder.FieldBuilder;
+import cn.shenyanchao.ut.builder.ImportsBuilder;
+import cn.shenyanchao.ut.builder.MethodBuilder;
 import japa.parser.ASTHelper;
 import japa.parser.ast.*;
 import japa.parser.ast.body.*;
@@ -8,10 +12,8 @@ import japa.parser.ast.stmt.*;
 import japa.parser.ast.type.*;
 import japa.parser.ast.visitor.GenericVisitor;
 import org.apache.commons.lang.StringUtils;
-import org.junit.BeforeClass;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
 
     private static final String TEST_CLASS_SUFFIX = "Test";
 
-    private static final String TEST_METHOD_SUFFIX = "Test";
+    private static final String TEST_METHOD_SUFFIX = TEST_CLASS_SUFFIX;
 
 
     @Override
@@ -49,9 +51,12 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
     public Node visit(PackageDeclaration _n, Object _arg) {
         List<AnnotationExpr> annotations = visit(_n.getAnnotations(), _arg);
         NameExpr name = cloneNodes(_n.getName(), _arg);
-        name.setName(name.getName() + TEST_PACKAGE_SUFFIX);
-        Comment comment = cloneNodes(_n.getComment(), _arg);
-
+        String testPackage = "test";//默认无package
+        if (StringUtils.isNotBlank(name.getName())) {
+            testPackage = name.getName() + TEST_PACKAGE_SUFFIX;
+        }
+        name.setName(testPackage);
+        Comment comment = null;
         PackageDeclaration r = new PackageDeclaration(annotations, name);
         r.setComment(comment);
         return r;
@@ -65,32 +70,22 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
      * @return
      */
     public List<ImportDeclaration> visitImports(List<ImportDeclaration> _nodes, Object _arg) {
+
+        ImportsBuilder importsBuilder = new ImportsBuilder();
+        List<ImportDeclaration> defaultImports = importsBuilder.buildTestNGImports()
+                .buildMockitoImports().build();
+
         if (_nodes == null) {
-            return null;
+            return defaultImports;
         }
         List<ImportDeclaration> r = new ArrayList<ImportDeclaration>(_nodes.size());
         for (ImportDeclaration n : _nodes) {
-            ImportDeclaration rN = cloneNodes(n, _arg);
+            ImportDeclaration rN = (ImportDeclaration) visit(n, _arg);
             if (rN != null) {
                 r.add(rN);
             }
         }
-        List<ImportDeclaration> testngImports = new ArrayList<ImportDeclaration>();
-        testngImports.add(new ImportDeclaration(new NameExpr("org.testng.annotations"),
-                false, true));
-        testngImports.add(new ImportDeclaration(new NameExpr("org.testng.Assert"),
-                true, true));
-        List<ImportDeclaration> mockitoImports = new ArrayList<ImportDeclaration>();
-        mockitoImports.add(new ImportDeclaration(new NameExpr("org.mockito.Mockito"),
-                true, true));
-        mockitoImports.add(new ImportDeclaration(new NameExpr("org.mockito.InjectMocks"),
-                false, false));
-        mockitoImports.add(new ImportDeclaration(new NameExpr("org.mockito.Mock"),
-                false, false));
-        mockitoImports.add(new ImportDeclaration(new NameExpr("org.mockito.MockitoAnnotations"),
-                false, false));
-        r.addAll(testngImports);
-        r.addAll(mockitoImports);
+        r.addAll(defaultImports);
         return r;
     }
 
@@ -134,7 +129,6 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
         Comment comment = cloneNodes(_n.getComment(), _arg);
 
         ImportDeclaration r = new ImportDeclaration(
-                _n.getBeginLine(), _n.getBeginColumn(), _n.getEndLine(), _n.getEndColumn(),
                 name, _n.isStatic(), _n.isAsterisk()
         );
         r.setComment(comment);
@@ -186,26 +180,18 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
         if (!_n.isInterface()) {
             String clazzName = _n.getName();
             String varName = StringUtils.lowerCase(clazzName.charAt(0) + "") + clazzName.substring(1);
-            targetDeclaration = ASTHelper.createFieldDeclaration(ModifierSet.PRIVATE,
-                    new ClassOrInterfaceType(clazzName), varName);
-            List<AnnotationExpr> injectMockAnnos = new ArrayList<AnnotationExpr>();
-            MarkerAnnotationExpr annotationExpr
-                    = new MarkerAnnotationExpr(new NameExpr(InjectMocks.class.getSimpleName()));
-            injectMockAnnos.add(annotationExpr);
-            targetDeclaration.setAnnotations(injectMockAnnos);
-            //-------------------------------
-            mockMethod = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.VOID_TYPE, "initMocks");
-            List<AnnotationExpr> annotationExprs = new ArrayList<AnnotationExpr>();
-            MarkerAnnotationExpr markerAnnotationExpr
-                    = new MarkerAnnotationExpr(new NameExpr(BeforeClass.class.getSimpleName()));
-            annotationExprs.add(markerAnnotationExpr);
-            mockMethod.setAnnotations(annotationExprs);
-            NameExpr nameExpr = new NameExpr(MockitoAnnotations.class.getSimpleName());
-            MethodCallExpr methodCallExpr = new MethodCallExpr(nameExpr, "initMocks");
-            ASTHelper.addArgument(methodCallExpr, new ThisExpr());
-            BlockStmt mockStmt = new BlockStmt();
-            mockMethod.setBody(mockStmt);
-            ASTHelper.addStmt(mockStmt, methodCallExpr);
+            FieldBuilder fieldBuilder = new FieldBuilder();
+            fieldBuilder.buildModifer(ModifierSet.PRIVATE).buildFieldType(clazzName).buildFieldVarName(varName)
+                    .buildFieldAnnotation(InjectMocks.class.getSimpleName());
+            targetDeclaration = fieldBuilder.build();
+
+            MethodBuilder methodBuilder = new MethodBuilder();
+            methodBuilder.buildMethodModifier(ModifierSet.PUBLIC).buildMethodReturnType(ASTHelper.VOID_TYPE)
+                    .buildMethodName("initMocks");
+            BlockStmtBuilder blockStmtBuilder = new BlockStmtBuilder();
+            BlockStmt blockStmt = blockStmtBuilder.buildInitMockStmt().build();
+            methodBuilder.buildBody(blockStmt);
+            mockMethod = methodBuilder.build();
         }
         List<BodyDeclaration> members = new ArrayList<BodyDeclaration>();
         members.add(targetDeclaration);
@@ -308,7 +294,6 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
         Comment comment = cloneNodes(_n.getComment(), _arg);
 
         FieldDeclaration r = new FieldDeclaration(
-                _n.getBeginLine(), _n.getBeginColumn(), _n.getEndLine(), _n.getEndColumn(),
                 javaDoc, _n.getModifiers(), annotations, type_, variables
         );
         r.setComment(comment);
@@ -973,13 +958,9 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
      */
     @Override
     public Node visit(BlockStmt _n, Object _arg) {
-        NameExpr clazz = new NameExpr(Assert.class.getSimpleName());
-        MethodCallExpr call = new MethodCallExpr(clazz, "assertTrue");
-        ASTHelper.addArgument(call, (new BooleanLiteralExpr(false)));
-        BlockStmt r = new BlockStmt();
-        ASTHelper.addStmt(r, call);
+        BlockStmtBuilder blockStmtBuilder = new BlockStmtBuilder();
+        BlockStmt r = blockStmtBuilder.buildAssertStmt().build();
         Comment comment = null;
-
         r.setComment(comment);
         return r;
     }
