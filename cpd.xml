@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd-cpd>
-<duplication lines="65" tokens="351">
-<file line="49" path="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/AstGenerator.java"/>
-<file line="55" path="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/DebugMain.java"/>
+<duplication lines="65" tokens="343">
+<file line="48" path="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/AstGenerator.java"/>
+<file line="53" path="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/DebugMain.java"/>
 <codefragment>
 <![CDATA[
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -51,45 +51,25 @@
 
         CompilationUnit sourceCU = JavaParserFactory.getCompilationUnit(javaFile, sourceEncode);
 
-        CompilationUnitBuilder compilationUnitBuilder = null;
+        CompilationUnit testCU = null;
         String testJavaFileName = JavaParserUtils.findTestJavaFileName(sourceCU, javaFile, testDir);
         boolean testExist = FileChecker.isTestJavaClassExist(new File(testJavaFileName));
         if (!testExist) {
             CommandInvoker invoker = new CommandInvoker(new NewTestCommand(new NewTestReceiver(sourceCU, javaFile)));
-            compilationUnitBuilder = invoker.action();
+            testCU = invoker.action();
         } else if (testExist) {
-            CompilationUnit testCU = JavaParserFactory.getCompilationUnit(new File(testJavaFileName), sourceEncode);
+            CompilationUnit existTestCU
+                    = JavaParserFactory.getCompilationUnit(new File(testJavaFileName), sourceEncode);
             CommandInvoker invoker = new CommandInvoker(new ExistTestCommand(new ExistTestReceiver(sourceCU, javaFile,
-                    testCU, new File(testJavaFileName))));
-            compilationUnitBuilder = invoker.action();
+                    existTestCU, new File(testJavaFileName))));
+            testCU = invoker.action();
         }
 
-        if (null != compilationUnitBuilder) {
-            CompilationUnit testCU = compilationUnitBuilder.build();
+        if (null != testCU) {
             //写入测试代码文件
             TestWriter.writeJavaTest(testJavaFileName, testCU.toString(), sourceEncode);
         }
     }
-]]>
-</codefragment>
-</duplication>
-<duplication lines="12" tokens="114">
-<file line="43" path="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/JavaParserCreateCU.java"/>
-<file line="197" path="/home/shenyanchao/git/ut-maven-plugin/src/main/java/cn/shenyanchao/ut/visitor/TestCodeVisitor.java"/>
-<codefragment>
-<![CDATA[
-        MethodDeclaration mockMethod = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.VOID_TYPE, "initMocks");
-        List<AnnotationExpr> annotationExprs = new ArrayList<AnnotationExpr>();
-        MarkerAnnotationExpr markerAnnotationExpr
-                = new MarkerAnnotationExpr(new NameExpr(BeforeClass.class.getSimpleName()));
-        annotationExprs.add(markerAnnotationExpr);
-        mockMethod.setAnnotations(annotationExprs);
-        NameExpr nameExpr = new NameExpr(MockitoAnnotations.class.getSimpleName());
-        MethodCallExpr methodCallExpr = new MethodCallExpr(nameExpr, "initMocks");
-        ASTHelper.addArgument(methodCallExpr, new ThisExpr());
-        BlockStmt mockStmt = new BlockStmt();
-        mockMethod.setBody(mockStmt);
-        ASTHelper.addStmt(mockStmt,methodCallExpr);
 ]]>
 </codefragment>
 </duplication>
