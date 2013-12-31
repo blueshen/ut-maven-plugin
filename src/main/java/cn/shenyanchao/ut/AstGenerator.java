@@ -1,6 +1,5 @@
 package cn.shenyanchao.ut;
 
-import cn.shenyanchao.ut.builder.CompilationUnitBuilder;
 import cn.shenyanchao.ut.command.ExistTestCommand;
 import cn.shenyanchao.ut.command.NewTestCommand;
 import cn.shenyanchao.ut.command.invoker.CommandInvoker;
@@ -92,21 +91,21 @@ public class AstGenerator extends AbstractMojo {
 
         CompilationUnit sourceCU = JavaParserFactory.getCompilationUnit(javaFile, sourceEncode);
 
-        CompilationUnitBuilder compilationUnitBuilder = null;
+        CompilationUnit testCU = null;
         String testJavaFileName = JavaParserUtils.findTestJavaFileName(sourceCU, javaFile, testDir);
         boolean testExist = FileChecker.isTestJavaClassExist(new File(testJavaFileName));
         if (!testExist) {
             CommandInvoker invoker = new CommandInvoker(new NewTestCommand(new NewTestReceiver(sourceCU, javaFile)));
-            compilationUnitBuilder = invoker.action();
+            testCU = invoker.action();
         } else if (testExist) {
-            CompilationUnit testCU = JavaParserFactory.getCompilationUnit(new File(testJavaFileName), sourceEncode);
+            CompilationUnit existTestCU
+                    = JavaParserFactory.getCompilationUnit(new File(testJavaFileName), sourceEncode);
             CommandInvoker invoker = new CommandInvoker(new ExistTestCommand(new ExistTestReceiver(sourceCU, javaFile,
-                    testCU, new File(testJavaFileName))));
-            compilationUnitBuilder = invoker.action();
+                    existTestCU, new File(testJavaFileName))));
+            testCU = invoker.action();
         }
 
-        if (null != compilationUnitBuilder) {
-            CompilationUnit testCU = compilationUnitBuilder.build();
+        if (null != testCU) {
             //写入测试代码文件
             TestWriter.writeJavaTest(testJavaFileName, testCU.toString(), sourceEncode);
         }

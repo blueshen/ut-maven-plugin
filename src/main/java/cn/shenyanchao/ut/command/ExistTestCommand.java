@@ -1,7 +1,7 @@
 package cn.shenyanchao.ut.command;
 
-import cn.shenyanchao.ut.builder.CompilationUnitBuilder;
 import cn.shenyanchao.ut.receiver.AbstractReceiver;
+import japa.parser.ast.CompilationUnit;
 
 /**
  * Date:  6/20/13
@@ -18,7 +18,7 @@ public class ExistTestCommand extends AbstractCommand {
     }
 
     @Override
-    public CompilationUnitBuilder sendCommand() {
+    public CompilationUnit sendCommand() {
         return receiver.createCU();
     }
 }

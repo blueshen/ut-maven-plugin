@@ -1,5 +1,6 @@
 package cn.shenyanchao.ut.builder;
 
+import cn.shenyanchao.ut.factory.BlockStmtFactory;
 import japa.parser.ASTHelper;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.JavadocComment;
@@ -53,9 +54,7 @@ public class ClassTypeBuilder {
         method.setComment(null);
         method.setAnnotations(annotationExprList);
         method.setType(ASTHelper.VOID_TYPE);
-        BlockStmtBuilder blockStmtBuilder = new BlockStmtBuilder();
-        blockStmtBuilder.buildAssertStmt();
-        method.setBody(blockStmtBuilder.build());
+        method.setBody(BlockStmtFactory.createAssertStmt());
         return addMethod(method);
     }
 

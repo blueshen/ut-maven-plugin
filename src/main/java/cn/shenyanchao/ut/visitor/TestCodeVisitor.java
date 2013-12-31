@@ -1,9 +1,11 @@
 package cn.shenyanchao.ut.visitor;
 
-import cn.shenyanchao.ut.builder.BlockStmtBuilder;
 import cn.shenyanchao.ut.builder.FieldBuilder;
 import cn.shenyanchao.ut.builder.ImportsBuilder;
 import cn.shenyanchao.ut.builder.MethodBuilder;
+import cn.shenyanchao.ut.factory.BlockStmtFactory;
+import cn.shenyanchao.ut.utils.MethodUtils;
+import cn.shenyanchao.ut.utils.TypeUtils;
 import japa.parser.ASTHelper;
 import japa.parser.ast.*;
 import japa.parser.ast.body.*;
@@ -14,8 +16,10 @@ import japa.parser.ast.visitor.GenericVisitor;
 import org.apache.commons.lang.StringUtils;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,10 +40,16 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
 
     @Override
     public Node visit(CompilationUnit _n, Object _arg) {
+        String sourcePackage = _n.getPackage().getName().toString();
+        List<String> classFullNames = new ArrayList<String>();
+        classFullNames.add(sourcePackage);
+//        for (TypeDeclaration type : _n.getTypes()) {
+//            classFullNames.add(sourcePackage + "." + type.getName());
+//        }
         List<TypeDeclaration> types = visitTypes(_n.getTypes(), _arg);
         if (!types.isEmpty()) {
             PackageDeclaration package_ = (PackageDeclaration) visit(_n.getPackage(), _arg);
-            List<ImportDeclaration> imports = visitImports(_n.getImports(), _arg);
+            List<ImportDeclaration> imports = visitImports(_n.getImports(), classFullNames);
             List<Comment> comments = visit(_n.getComments(), _arg);
             return new CompilationUnit(package_, imports, types, comments);
         } else {  //不包含需要处理的类型
@@ -72,10 +82,12 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
     public List<ImportDeclaration> visitImports(List<ImportDeclaration> _nodes, Object _arg) {
 
         ImportsBuilder importsBuilder = new ImportsBuilder();
-        List<ImportDeclaration> defaultImports = importsBuilder.buildTestNGImports()
-                .buildMockitoImports().build();
-
-        if (_nodes == null) {
+        importsBuilder.buildTestNGImports().buildMockitoImports();
+        for (String arg : (List<String>) _arg) {
+            importsBuilder.buildImportByName(arg);
+        }
+        List<ImportDeclaration> defaultImports = importsBuilder.build();
+        if (null == _nodes) {
             return defaultImports;
         }
         List<ImportDeclaration> r = new ArrayList<ImportDeclaration>(_nodes.size());
@@ -95,7 +107,8 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
         }
         List<TypeDeclaration> r = new ArrayList<TypeDeclaration>(_nodes.size());
         for (TypeDeclaration n : _nodes) {
-            if (n instanceof ClassOrInterfaceDeclaration && !((ClassOrInterfaceDeclaration) n).isInterface()) {
+            if ((n instanceof ClassOrInterfaceDeclaration) && !((ClassOrInterfaceDeclaration) n).isInterface()
+                    && TypeUtils.isNeedTest(n) && !TypeUtils.isJavaBean(n)) {
                 n = (ClassOrInterfaceDeclaration) visit((ClassOrInterfaceDeclaration) n, _arg);
             } else {
                 continue;
@@ -109,7 +122,7 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
     public List<BodyDeclaration> visitMembers(List<BodyDeclaration> _nodes, Object _arg) {
         List<BodyDeclaration> members = new ArrayList<BodyDeclaration>();
         for (BodyDeclaration member : _nodes) {
-            if (member instanceof MethodDeclaration) {
+            if (member instanceof MethodDeclaration && MethodUtils.isNeedTest((MethodDeclaration) member)) {
                 member = (MethodDeclaration) visit((MethodDeclaration) member, _arg);
             } else if (member instanceof FieldDeclaration) {
                 member = (FieldDeclaration) visit((FieldDeclaration) member, _arg);
@@ -187,16 +200,16 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
 
             MethodBuilder methodBuilder = new MethodBuilder();
             methodBuilder.buildMethodModifier(ModifierSet.PUBLIC).buildMethodReturnType(ASTHelper.VOID_TYPE)
-                    .buildMethodName("initMocks");
-            BlockStmtBuilder blockStmtBuilder = new BlockStmtBuilder();
-            BlockStmt blockStmt = blockStmtBuilder.buildInitMockStmt().build();
+                    .buildMethodName("initMocks").buildMethodAnnotations(BeforeClass.class.getSimpleName());
+
+            BlockStmt blockStmt = BlockStmtFactory.createInitMockStmt();
             methodBuilder.buildBody(blockStmt);
             mockMethod = methodBuilder.build();
         }
         List<BodyDeclaration> members = new ArrayList<BodyDeclaration>();
         members.add(targetDeclaration);
         members.add(mockMethod);
-        members.addAll(visit(_n.getMembers(), _arg));
+        members.addAll(visitMembers(_n.getMembers(), _arg));
         Comment comment = cloneNodes(_n.getComment(), _arg);
 
         ClassOrInterfaceDeclaration r = new ClassOrInterfaceDeclaration(javaDoc, _n.getModifiers(),
@@ -294,7 +307,7 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
         Comment comment = cloneNodes(_n.getComment(), _arg);
 
         FieldDeclaration r = new FieldDeclaration(
-                javaDoc, _n.getModifiers(), annotations, type_, variables
+                javaDoc, Modifier.PRIVATE, annotations, type_, variables
         );
         r.setComment(comment);
         return r;
@@ -958,8 +971,7 @@ public class TestCodeVisitor implements GenericVisitor<Node, Object> {
      */
     @Override
     public Node visit(BlockStmt _n, Object _arg) {
-        BlockStmtBuilder blockStmtBuilder = new BlockStmtBuilder();
-        BlockStmt r = blockStmtBuilder.buildAssertStmt().build();
+        BlockStmt r = BlockStmtFactory.createAssertStmt();
         Comment comment = null;
         r.setComment(comment);
         return r;

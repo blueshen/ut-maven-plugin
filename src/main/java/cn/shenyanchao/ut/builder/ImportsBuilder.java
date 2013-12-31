@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class ImportsBuilder {
 
-    private  List<ImportDeclaration> importsList = new ArrayList<ImportDeclaration>();
+    private List<ImportDeclaration> importsList = new ArrayList<ImportDeclaration>();
 
     public ImportsBuilder buildTestNGImports() {
         List<ImportDeclaration> testngImports = new ArrayList<ImportDeclaration>();
@@ -45,7 +45,13 @@ public class ImportsBuilder {
         return this;
     }
 
-    public List<ImportDeclaration> build(){
+    public ImportsBuilder buildImportByName(String classFullName) {
+        ImportDeclaration importDeclaration = new ImportDeclaration(new NameExpr(classFullName), false, true);
+        importsList.add(importDeclaration);
+        return this;
+    }
+
+    public List<ImportDeclaration> build() {
         return this.importsList;
     }
 }

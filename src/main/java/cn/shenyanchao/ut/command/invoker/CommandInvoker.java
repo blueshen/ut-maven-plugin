@@ -1,7 +1,7 @@
 package cn.shenyanchao.ut.command.invoker;
 
-import cn.shenyanchao.ut.builder.CompilationUnitBuilder;
 import cn.shenyanchao.ut.command.AbstractCommand;
+import japa.parser.ast.CompilationUnit;
 
 /**
  * Date:  6/20/13
@@ -17,7 +17,7 @@ public class CommandInvoker {
         this.command = command;
     }
 
-    public CompilationUnitBuilder action() {
+    public CompilationUnit action() {
         return command.sendCommand();
     }
 }

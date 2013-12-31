@@ -35,4 +35,14 @@ public class MethodUtils {
         }
         return null;
     }
+
+    public static boolean isNeedTest(MethodDeclaration methodDeclaration) {
+        String methodName = methodDeclaration.getName();
+        if ("equals".equals(methodName) || "hashCode".equals(methodName) || "toString".equals(methodName)) {
+            return false;
+        }
+        return true;
+    }
+
+
 }

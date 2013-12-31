@@ -1,6 +1,7 @@
 package cn.shenyanchao.ut.receiver;
 
 import cn.shenyanchao.ut.builder.CompilationUnitBuilder;
+import japa.parser.ast.CompilationUnit;
 
 /**
  * Date:  6/20/13
@@ -10,5 +11,6 @@ import cn.shenyanchao.ut.builder.CompilationUnitBuilder;
  */
 public abstract class AbstractReceiver {
 
-    public abstract CompilationUnitBuilder createCU();
+    public abstract CompilationUnitBuilder createCUBuilder();
+    public abstract CompilationUnit createCU();
 }

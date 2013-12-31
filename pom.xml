@@ -12,10 +12,10 @@
     <packaging>maven-plugin</packaging>
     <name>ut-maven-plugin</name>
     <description>Maven Plugin for Generate Unit Test Code Template</description>
-    <url>http://www.shenyanchao.cn</url>
+    <url>http://www.shenyanchao.cn/ut-maven-plugin/</url>
     <developers>
         <developer>
-            <id>shenyanchao</id>
+            <id>blueshen</id>
             <name>ShenYanchao</name>
             <email>zhiyi.shen@gmail.com</email>
         </developer>

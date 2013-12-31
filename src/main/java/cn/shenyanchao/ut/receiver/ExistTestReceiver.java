@@ -42,7 +42,7 @@ public class ExistTestReceiver extends AbstractReceiver {
     }
 
     @Override
-    public CompilationUnitBuilder createCU() {
+    public CompilationUnitBuilder createCUBuilder() {
         CompilationUnitBuilder compilationUnitBuilder = new CompilationUnitBuilder(testCU);
         TypeDeclaration typeDeclaration = JavaParserUtils.findTargetTypeDeclaration(sourceCU, javaFile);
         TypeDeclaration testTypeDeclaration = JavaParserUtils.findTargetTypeDeclaration(testCU, testJavaFile);
@@ -62,5 +62,11 @@ public class ExistTestReceiver extends AbstractReceiver {
             }
         }
         return compilationUnitBuilder;
+
+    }
+
+    @Override
+    public CompilationUnit createCU() {
+        return testCU;
     }
 }

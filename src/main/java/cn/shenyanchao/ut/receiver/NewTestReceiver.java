@@ -7,6 +7,7 @@ import cn.shenyanchao.ut.common.Consts;
 import cn.shenyanchao.ut.common.FileComments;
 import cn.shenyanchao.ut.utils.JavaParserUtils;
 import cn.shenyanchao.ut.utils.MembersFilter;
+import cn.shenyanchao.ut.visitor.TestCodeVisitor;
 import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.ImportDeclaration;
 import japa.parser.ast.body.MethodDeclaration;
@@ -39,7 +40,14 @@ public class NewTestReceiver extends AbstractReceiver {
     }
 
     @Override
-    public CompilationUnitBuilder createCU() {
+    public CompilationUnit createCU(){
+        TestCodeVisitor testCodeVisitor = new TestCodeVisitor();
+        CompilationUnit testCU = (CompilationUnit) testCodeVisitor.visit(sourceCU, "");
+        return testCU;
+    }
+
+    @Override
+    public CompilationUnitBuilder createCUBuilder() {
 
         String testPackageName = JavaParserUtils.findTestPackageName(sourceCU);
         TypeDeclaration typeDeclaration = JavaParserUtils.findTargetTypeDeclaration(sourceCU, javaFile);

@@ -1,6 +1,6 @@
 package cn.shenyanchao.ut.command;
 
-import cn.shenyanchao.ut.builder.CompilationUnitBuilder;
+import japa.parser.ast.CompilationUnit;
 
 /**
  * Date:  6/20/13
@@ -10,5 +10,5 @@ import cn.shenyanchao.ut.builder.CompilationUnitBuilder;
  */
 public abstract class AbstractCommand {
 
-    public abstract CompilationUnitBuilder sendCommand();
+    public abstract CompilationUnit sendCommand();
 }

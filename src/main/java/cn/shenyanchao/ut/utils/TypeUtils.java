@@ -1,8 +1,10 @@
 package cn.shenyanchao.ut.utils;
 
 import japa.parser.ast.body.*;
+import japa.parser.ast.expr.AnnotationExpr;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,6 +17,7 @@ public class TypeUtils {
 
     /**
      * if class is POJO
+     *
      * @param typeDeclaration
      * @return true or false
      */
@@ -40,6 +43,7 @@ public class TypeUtils {
 
     /**
      * getter or setter process
+     *
      * @param fieldName
      * @return methodName without get or set prefix
      */
@@ -58,6 +62,7 @@ public class TypeUtils {
 
     /**
      * is method have get and set method
+     *
      * @param typeDeclaration
      * @param fieldName
      * @return true or false
@@ -82,6 +87,7 @@ public class TypeUtils {
 
     /**
      * is private class
+     *
      * @param typeDeclaration
      * @return true or false
      */
@@ -92,6 +98,7 @@ public class TypeUtils {
 
     /**
      * is public class
+     *
      * @param typeDeclaration
      * @return true or false
      */
@@ -102,6 +109,7 @@ public class TypeUtils {
 
     /**
      * is  abstract class
+     *
      * @param typeDeclaration
      * @return true or false
      */
@@ -110,5 +118,23 @@ public class TypeUtils {
         return ModifierSet.isAbstract(modifiers);
     }
 
+    public static boolean isNeedTest(TypeDeclaration typeDeclaration) {
+        List<String> springAnnotations = new ArrayList<String>();
+        springAnnotations.add("Service");
+        springAnnotations.add("Repository");
+        springAnnotations.add("Controller");
+        springAnnotations.add("Resource");
+        springAnnotations.add("Component");
+        List<AnnotationExpr> annotationExprs = typeDeclaration.getAnnotations();
+        if (null != annotationExprs) {
+            for (AnnotationExpr annotationExpr : annotationExprs) {
+                String annotation = annotationExpr.getName().getName();
+                if (springAnnotations.contains(annotation)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }
