@@ -36,7 +36,6 @@ public class NewTestReceiver extends AbstractReceiver {
 
     public NewTestReceiver(CompilationUnit sourceCU, File javaFile) {
         this.sourceCU = sourceCU;
-        this.javaFile = javaFile;
     }
 
     @Override

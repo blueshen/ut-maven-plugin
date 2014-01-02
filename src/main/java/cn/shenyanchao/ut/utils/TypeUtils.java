@@ -3,7 +3,12 @@ package cn.shenyanchao.ut.utils;
 import japa.parser.ast.body.*;
 import japa.parser.ast.expr.AnnotationExpr;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,11 +125,11 @@ public class TypeUtils {
 
     public static boolean isNeedTest(TypeDeclaration typeDeclaration) {
         List<String> springAnnotations = new ArrayList<String>();
-        springAnnotations.add("Service");
-        springAnnotations.add("Repository");
-        springAnnotations.add("Controller");
-        springAnnotations.add("Resource");
-        springAnnotations.add("Component");
+        springAnnotations.add(Service.class.getSimpleName());
+        springAnnotations.add(Repository.class.getSimpleName());
+        springAnnotations.add(Controller.class.getSimpleName());
+        springAnnotations.add(Component.class.getSimpleName());
+        springAnnotations.add(Resource.class.getSimpleName());
         List<AnnotationExpr> annotationExprs = typeDeclaration.getAnnotations();
         if (null != annotationExprs) {
             for (AnnotationExpr annotationExpr : annotationExprs) {

@@ -6,6 +6,7 @@ import cn.shenyanchao.ut.common.Consts;
 import cn.shenyanchao.ut.utils.FileChecker;
 import cn.shenyanchao.ut.utils.JavaParserUtils;
 import cn.shenyanchao.ut.utils.MembersFilter;
+import cn.shenyanchao.ut.visitor.TestCodeVisitor;
 import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.MethodDeclaration;
@@ -67,6 +68,26 @@ public class ExistTestReceiver extends AbstractReceiver {
 
     @Override
     public CompilationUnit createCU() {
+
+        TestCodeVisitor testCodeVisitor = new TestCodeVisitor();
+        TypeDeclaration typeDeclaration = JavaParserUtils.findTargetTypeDeclaration(sourceCU, javaFile);
+        TypeDeclaration testTypeDeclaration = JavaParserUtils.findTargetTypeDeclaration(testCU, testJavaFile);
+        List<MethodDeclaration> methodDeclarations = MembersFilter.findMethodsFrom(typeDeclaration);
+
+        ClassTypeBuilder classTypeBuilder = new ClassTypeBuilder((ClassOrInterfaceDeclaration) testTypeDeclaration);
+
+        //process methods
+        for (MethodDeclaration methodDeclaration : methodDeclarations) {
+            String methodName = methodDeclaration.getName();
+            MethodDeclaration testMethodDeclaration = FileChecker.isTestCaseExist(testCU,
+                    methodDeclaration);
+            boolean methodExist = (testMethodDeclaration == null ? false : true);
+            if (!methodExist) {
+                classTypeBuilder.addMethod((MethodDeclaration) testCodeVisitor.visit(methodDeclaration, ""));
+
+            }
+        }
+
         return testCU;
     }
 }

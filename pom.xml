@@ -13,11 +13,19 @@
     <name>ut-maven-plugin</name>
     <description>Maven Plugin for Generate Unit Test Code Template</description>
     <url>http://www.shenyanchao.cn/ut-maven-plugin/</url>
+    <prerequisites>
+        <maven>3.0.3</maven>
+    </prerequisites>
+    <issueManagement>
+        <url>https://github.com/blueshen/ut-maven-plugin/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
     <developers>
         <developer>
             <id>blueshen</id>
             <name>ShenYanchao</name>
             <email>zhiyi.shen@gmail.com</email>
+            <url>http://www.shenyanchao.cn</url>
         </developer>
     </developers>
     <licenses>
@@ -40,14 +48,13 @@
         </repository>
     </distributionManagement>
     <scm>
-        <connection>scm:git:git@github.com:blueshen/ut-maven-plugin.git</connection>
+        <connection>scm:git:git@github.com/blueshen/ut-maven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:blueshen/ut-maven-plugin.git</developerConnection>
-        <url>git@github.com:blueshen/ut-maven-plugin.git</url>
+        <url>https://github.com/blueshen/ut-maven-plugin.git</url>
     </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <github.global.server>github</github.global.server>
     </properties>
 
 
@@ -83,6 +90,13 @@
             <artifactId>commons-lang</artifactId>
             <version>2.6</version>
         </dependency>
+        <!--spring mvc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>3.2.3.RELEASE</version>
+        </dependency>
+
         <!--javaparser-->
         <dependency>
             <groupId>com.google.code.javaparser</groupId>

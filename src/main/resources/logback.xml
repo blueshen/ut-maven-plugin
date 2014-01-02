@@ -22,7 +22,7 @@
         <level value="DEBUG"/>
     </logger>
     <root>
-        <level value="DEBUG"/>
+        <level value="WARN"/>
         <appender-ref ref="stdout"/>
         <appender-ref ref="file"/>
     </root>

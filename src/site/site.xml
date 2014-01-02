@@ -42,6 +42,7 @@
             <item name="Spring Framework" href="http://spring.io/" />
             <item name="DbUnit" href="http://www.dbunit.org/" />
             <item name="JUnit" href="http://www.junit.org/" />
+            <item name="Mockito" href="https://code.google.com/p/mockito/" />
         </links>
 
         <breadcrumbs>
