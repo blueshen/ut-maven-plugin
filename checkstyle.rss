@@ -6,10 +6,10 @@
     <link>http://www.shenyanchao.cn/ut-maven-plugin/</link>
     <description>ut-maven-plugin - Checkstyle report</description>
     <language>en-us</language>
-    <copyright>&#169;2013</copyright>
+    <copyright>&#169;2014</copyright>
     <item>
       <title>File: 30,
-             Errors: 1016,
+             Errors: 1024,
              Warnings: 0,
              Infos: 0
       </title>
@@ -122,7 +122,7 @@
                   0
                 </td>
                 <td>
-                  32
+                  34
                 </td>
               </tr>
                           <tr>
@@ -164,7 +164,7 @@
                   0
                 </td>
                 <td>
-                  18
+                  21
                 </td>
               </tr>
                           <tr>
@@ -332,7 +332,7 @@
                   0
                 </td>
                 <td>
-                  9
+                  12
                 </td>
               </tr>
                           <tr>
