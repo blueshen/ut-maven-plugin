@@ -1,0 +1,24 @@
+-classpath
+'/home/shenyanchao/git/ut-maven-plugin/target/classes:/home/shenyanchao/mvn_repo/ch/qos/logback/logback-core/1.0.13/logback-core-1.0.13.jar:/home/shenyanchao/mvn_repo/commons-lang/commons-lang/2.6/commons-lang-2.6.jar:/home/shenyanchao/mvn_repo/org/mockito/mockito-all/1.9.5/mockito-all-1.9.5.jar:/home/shenyanchao/mvn_repo/org/springframework/spring-beans/3.2.3.RELEASE/spring-beans-3.2.3.RELEASE.jar:/home/shenyanchao/mvn_repo/org/beanshell/bsh/2.0b4/bsh-2.0b4.jar:/home/shenyanchao/mvn_repo/org/springframework/spring-core/3.2.3.RELEASE/spring-core-3.2.3.RELEASE.jar:/home/shenyanchao/mvn_repo/org/slf4j/slf4j-api/1.7.5/slf4j-api-1.7.5.jar:/home/shenyanchao/mvn_repo/junit/junit/4.10/junit-4.10.jar:/home/shenyanchao/mvn_repo/org/apache/maven/maven-plugin-api/2.0/maven-plugin-api-2.0.jar:/home/shenyanchao/mvn_repo/org/apache/maven/maven-artifact/3.0/maven-artifact-3.0.jar:/home/shenyanchao/mvn_repo/commons-io/commons-io/2.4/commons-io-2.4.jar:/home/shenyanchao/mvn_repo/org/springframework/spring-aop/3.2.3.RELEASE/spring-aop-3.2.3.RELEASE.jar:/home/shenyanchao/mvn_repo/aopalliance/aopalliance/1.0/aopalliance-1.0.jar:/home/shenyanchao/mvn_repo/ch/qos/logback/logback-classic/1.0.13/logback-classic-1.0.13.jar:/home/shenyanchao/mvn_repo/org/yaml/snakeyaml/1.6/snakeyaml-1.6.jar:/home/shenyanchao/mvn_repo/org/springframework/spring-expression/3.2.3.RELEASE/spring-expression-3.2.3.RELEASE.jar:/home/shenyanchao/mvn_repo/com/beust/jcommander/1.27/jcommander-1.27.jar:/home/shenyanchao/mvn_repo/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar:/home/shenyanchao/mvn_repo/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar:/home/shenyanchao/mvn_repo/org/codehaus/plexus/plexus-utils/3.0.8/plexus-utils-3.0.8.jar:/home/shenyanchao/mvn_repo/org/apache/maven/plugin-tools/maven-plugin-annotations/3.2/maven-plugin-annotations-3.2.jar:/home/shenyanchao/mvn_repo/org/springframework/spring-context/3.2.3.RELEASE/spring-context-3.2.3.RELEASE.jar:/home/shenyanchao/mvn_repo/org/testng/testng/6.8.5/testng-6.8.5.jar:/home/shenyanchao/mvn_repo/com/google/code/javaparser/javaparser/1.0.9/javaparser-1.0.9.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/home/shenyanchao/git/ut-maven-plugin/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2014. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'/home/shenyanchao/git/ut-maven-plugin/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'ut-maven-plugin 0.2.10-SNAPSHOT API'
+-linkoffline
+'http://docs.oracle.com/javase/6/docs/api' '/home/shenyanchao/git/ut-maven-plugin/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'ut-maven-plugin 0.2.10-SNAPSHOT API'
